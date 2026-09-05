@@ -1,690 +1,672 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I Wonder 3 – Interactive English Class</title>
-<style>
-:root{
-  --primary:#4361ee; --primary-dark:#3a0ca3; --accent:#f72585;
-  --green:#2ec4b6; --yellow:#ffbf00; --orange:#ff7b00;
-  --bg:#f0f4ff; --card:#ffffff; --text:#1d3557; --muted:#5c6b8a;
-  --radius:20px; --shadow:0 8px 24px rgba(67,97,238,.15);
-}
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif}
-body{background:var(--bg);color:var(--text);line-height:1.5;overflow-x:hidden}
-.hidden{display:none!important}
+const BOOK_PAGES = [
+  /* ---------------- PÁGINA 16 ---------------- */
+  {
+    page: 16,
+    title: "Unit 1 – Listening, Skills and Speaking",
+    objective: "Identify storybook characters and ask about them",
+    activities: [
+      {
+        type: "flashcards",
+        instruction: "Look and say the names of the characters.",
+        words: [
+          { emoji: "👸", word: "Fiona", es: "Fiona" },
+          { emoji: "❄️", word: "Elsa", es: "Elsa" },
+          { emoji: "🛡️", word: "Obelix", es: "Obelix" },
+          { emoji: "🤥", word: "Pinocchio", es: "Pinocho" }
+        ]
+      },
+      {
+        type: "quiz",
+        instruction: "Read and choose the correct character.",
+        question: "1. She's a princess. She can make snow and ice.",
+        options: ["Snow White", "Elsa"],
+        correct: 1,
+        hint: "Think about the movie Frozen."
+      },
+      {
+        type: "quiz",
+        instruction: "Read and choose the correct character.",
+        question: "2. He's a pirate. He can sail a boat.",
+        options: ["Captain Hook", "Puss in Boots"],
+        correct: 0,
+        hint: "He has a hook for a hand."
+      },
+      {
+        type: "quiz",
+        instruction: "Read and choose the correct character.",
+        question: "5. He's brave and kind. He can fly on a broom.",
+        options: ["Harry Potter", "Peter Pan"],
+        correct: 0,
+        hint: "He wears glasses and goes to Hogwarts."
+      },
+      {
+        type: "speaking",
+        instruction: "Play the game with a classmate or out loud.",
+        question: "Is it a man or a woman? What does he look like?",
+        model: "He's fat. He's got straight red hair. It's Obelix!"
+      }
+    ]
+  },
 
-/* HEADER */
-header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:18px 24px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.15)}
-.header-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-.logo h1{font-size:1.7rem;letter-spacing:1px}
-.logo p{font-size:.85rem;opacity:.9}
-.header-stats{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.stat{background:rgba(255,255,255,.18);padding:6px 14px;border-radius:30px;font-weight:700;font-size:.95rem}
-.progress-wrap{margin-top:12px}
-.progress-label{font-size:.8rem;margin-bottom:4px;opacity:.9}
-.progress-bar{height:14px;background:rgba(255,255,255,.25);border-radius:20px;overflow:hidden}
-.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--yellow),var(--green));transition:width .6s ease;border-radius:20px}
+  /* ---------------- PÁGINA 17 ---------------- */
+  {
+    page: 17,
+    title: "Unit 1 – Reading & Writing (My Favourite Book)",
+    objective: "Read about Peter Pan and describe book characters",
+    activities: [
+      {
+        type: "text",
+        instruction: "Read the book review summary:",
+        html: "<p><b>Title:</b> Peter Pan<br><b>Author:</b> J. M. Barrie<br><b>Favourite Character:</b> Peter Pan<br><b>Description:</b> Peter Pan is a boy from Neverland. He's 12 years old. He's got red hair, brown eyes and pointed ears. His clothes are green. He can fly!</p>"
+      },
+      {
+        type: "quiz",
+        instruction: "Underline / Choose the correct word.",
+        question: "Peter Pan is ... years old.",
+        options: ["twelve", "twenty"],
+        correct: 0
+      },
+      {
+        type: "quiz",
+        instruction: "Choose the correct option.",
+        question: "He's from...",
+        options: ["Greenland", "Neverland"],
+        correct: 1
+      },
+      {
+        type: "quiz",
+        instruction: "Choose the correct hair color.",
+        question: "He's got ... hair.",
+        options: ["dark", "red"],
+        correct: 1
+      },
+      {
+        type: "speaking",
+        instruction: "Tell the class about your favourite book.",
+        question: "What's your favourite book and who is your favourite character?",
+        model: "My favourite book is Harry Potter. He is a young wizard with glasses and he can do magic."
+      }
+    ]
+  },
 
-/* BUTTONS */
-button{cursor:pointer;border:none;font-family:inherit;transition:transform .15s,box-shadow .15s}
-button:active{transform:scale(.96)}
-.btn{background:var(--primary);color:#fff;padding:12px 26px;border-radius:30px;font-size:1rem;font-weight:700;box-shadow:var(--shadow)}
-.btn:hover{transform:translateY(-2px)}
-.btn-accent{background:var(--accent)}
-.btn-green{background:var(--green)}
-.btn-yellow{background:var(--yellow);color:#5a4500}
-.btn-orange{background:var(--orange)}
-.btn-ghost{background:#e6ecff;color:var(--primary)}
-.btn-sm{padding:8px 16px;font-size:.85rem}
-.btn-lg{padding:16px 40px;font-size:1.2rem}
+  /* ---------------- PÁGINA 18 ---------------- */
+  {
+    page: 18,
+    title: "Clocks English – Punctuation Rules",
+    objective: "Learn capital letters, full stops, question marks, and exclamation marks",
+    activities: [
+      {
+        type: "text",
+        instruction: "Grammar Rules",
+        html: "<ul><li>Use <b>CAPITAL LETTERS</b> for the first word in a sentence and for names.</li><li>End a sentence with a <b>full stop (.)</b>, a <b>question mark (?)</b>, or an <b>exclamation mark (!)</b>.</li></ul>"
+      },
+      {
+        type: "type",
+        instruction: "Rewrite with correct punctuation and capital letters.",
+        question: "what is your favourite colour",
+        answer: "What is your favourite colour?",
+        hint: "Start with 'W' and end with '?'"
+      },
+      {
+        type: "type",
+        instruction: "Rewrite with correct punctuation.",
+        question: "i like chocolate ice cream",
+        answer: "I like chocolate ice cream.",
+        hint: "Capital 'I' and end with '.'"
+      },
+      {
+        type: "type",
+        instruction: "Rewrite with correct punctuation.",
+        question: "my brother's name is george",
+        answer: "My brother's name is George.",
+        hint: "Capital 'M' and capital 'G' for George."
+      }
+    ]
+  },
 
-/* HOME */
-#home{min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px}
-#home .hero-emoji{font-size:5rem;animation:bounce 2s infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
-#home h2{font-size:2.6rem;color:var(--primary-dark);margin:10px 0}
-#home .sub{font-size:1.2rem;color:var(--muted);margin-bottom:30px}
+  /* ---------------- PÁGINA 19 ---------------- */
+  {
+    page: 19,
+    title: "Story Punctuation – The Frogs",
+    objective: "Complete story dialogues with correct punctuation",
+    activities: [
+      {
+        type: "build",
+        instruction: "Build the question with correct punctuation:",
+        words: ["Can", "we", "play,", "Fred?"],
+        correct: "Can we play, Fred?"
+      },
+      {
+        type: "type",
+        instruction: "Complete with punctuation:",
+        question: "yes let's go in here → ?",
+        answer: "Yes, let's go in here.",
+        hint: "Capital Y and a full stop at the end."
+      },
+      {
+        type: "type",
+        instruction: "Complete with punctuation:",
+        question: "look, it's butter → ?",
+        answer: "Look, it's butter!",
+        hint: "Capital L and exclamation mark."
+      }
+    ]
+  },
 
-/* DASHBOARD */
-.container{max-width:1200px;margin:0 auto;padding:24px}
-.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px;margin-top:20px}
-.dash-card{background:var(--card);border-radius:var(--radius);padding:24px 18px;text-align:center;box-shadow:var(--shadow);cursor:pointer;border:3px solid transparent}
-.dash-card:hover{transform:translateY(-6px) scale(1.02);border-color:var(--primary)}
-.dash-card .icon{font-size:3rem}
-.dash-card .title{font-weight:800;margin-top:10px;font-size:1.05rem}
-.dash-card .desc{font-size:.8rem;color:var(--muted);margin-top:4px}
+  /* ---------------- PÁGINA 20 ---------------- */
+  {
+    page: 20,
+    title: "Sounds and Words – Phonics (oo)",
+    objective: "Recognize same spelling with different sounds (oo)",
+    activities: [
+      {
+        type: "flashcards",
+        instruction: "Listen and repeat the words with 'oo'.",
+        words: [
+          { emoji: "👢", word: "boot", es: "bota" },
+          { emoji: "👨‍🍳", word: "cook", es: "cocinar / cocinero" },
+          { emoji: "📖", word: "book", es: "libro" },
+          { emoji: "🪵", word: "wood", es: "madera" },
+          { emoji: "🌙", word: "moon", es: "luna" },
+          { emoji: "🏫", word: "school", es: "escuela" }
+        ]
+      },
+      {
+        type: "type",
+        instruction: "Complete the rhyming sentence.",
+        question: "Poor Baloo is in the ...",
+        answer: "zoo",
+        hint: "Rhymes with Baloo"
+      },
+      {
+        type: "type",
+        instruction: "Complete the rhyming sentence.",
+        question: "Captain Hook likes to ...",
+        answer: "cook",
+        hint: "Rhymes with Hook"
+      },
+      {
+        type: "match",
+        instruction: "Match the rhyming words.",
+        pairs: [
+          { word: "moon", emoji: "🥄" }, // spoon
+          { word: "hood", emoji: "🪵" }, // wood
+          { word: "pool", emoji: "🏫" }  // school
+        ]
+      }
+    ]
+  },
 
-/* MODULE SCREENS */
-.screen{display:none;animation:fadeIn .4s ease}
-.screen.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-.module-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
-.module-header h2{font-size:1.8rem;color:var(--primary-dark)}
-.card{background:var(--card);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);margin-bottom:20px}
-.objective{background:#fff8e1;border-left:6px solid var(--yellow);padding:12px 18px;border-radius:12px;margin-bottom:18px;font-weight:600}
-.activity-title{font-size:1.3rem;font-weight:800;margin-bottom:6px}
-.instruction{color:var(--muted);margin-bottom:18px}
+  /* ---------------- PÁGINA 21 ---------------- */
+  {
+    page: 21,
+    title: "Unit 1 – Review & Self-Assessment",
+    objective: "Describe characters and review achievements",
+    activities: [
+      {
+        type: "flashcards",
+        instruction: "Physical appearance features:",
+        words: [
+          { emoji: "👩‍🦰", word: "straight hair", es: "pelo liso" },
+          { emoji: "👩‍🦱", word: "curly hair", es: "pelo rizado" },
+          { emoji: "👱‍♀️", word: "fair hair", es: "pelo rubio/claro" },
+          { emoji: "👧", word: "freckles", es: "pecas" },
+          { emoji: "👓", word: "glasses", es: "gafas" },
+          { emoji: "👱‍♀️", word: "a ponytail", es: "una coleta" }
+        ]
+      },
+      {
+        type: "speaking",
+        instruction: "Describe your own storybook character.",
+        question: "What's his/her name? What does he/she look like?",
+        model: "Her name is Luna. She's got curly fair hair and glasses. She can fly!"
+      }
+    ]
+  },
 
-/* OPTIONS / QUIZ */
-.options{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
-.opt{background:#eef2ff;border:3px solid transparent;padding:16px;border-radius:16px;font-size:1.1rem;font-weight:700;text-align:center}
-.opt:hover{border-color:var(--primary)}
-.opt.correct{background:#d8f5f0;border-color:var(--green);animation:pop .3s}
-.opt.wrong{background:#ffe0ec;border-color:var(--accent)}
-@keyframes pop{50%{transform:scale(1.08)}}
-.feedback{margin-top:16px;font-size:1.15rem;font-weight:800;min-height:28px}
-.feedback.good{color:var(--green)}
-.feedback.bad{color:var(--accent)}
-.hint{background:#e6f7ff;border-radius:12px;padding:10px 16px;margin-top:12px;font-style:italic;color:#0077b6}
+  /* ---------------- PÁGINA 22 ---------------- */
+  {
+    page: 22,
+    title: "Unit 2 – Camping (Time to Wonder)",
+    objective: "Learn camping activities and vocabulary",
+    activities: [
+      {
+        type: "flashcards",
+        instruction: "Look and say camping activities.",
+        words: [
+          { emoji: "🏊‍♂️", word: "swim", es: "nadar" },
+          { emoji: "🎣", word: "fish", es: "pescar" },
+          { emoji: "🚶‍♀️", word: "go for walks", es: "dar paseos" },
+          { emoji: "🥩", word: "have a barbecue", es: "hacer una barbacoa" },
+          { emoji: "🎲", word: "play games", es: "jugar a juegos" },
+          { emoji: "🚴‍♂️", word: "ride a bike", es: "montar en bici" }
+        ]
+      },
+      {
+        type: "speaking",
+        instruction: "Talk with a friend about camping.",
+        question: "What do you like doing when you go camping?",
+        model: "I like fishing and having a barbecue."
+      }
+    ]
+  },
 
-/* FLASHCARDS */
-.flash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px}
-.flash{background:linear-gradient(160deg,#fff,#eef2ff);border-radius:18px;padding:22px;text-align:center;box-shadow:var(--shadow);border:3px solid #dce4ff}
-.flash .emoji{font-size:3.5rem}
-.flash .word{font-size:1.4rem;font-weight:800;margin:8px 0 2px}
-.flash .ipa{color:var(--muted);font-size:.9rem}
-.flash .es{color:var(--accent);font-weight:600;font-size:.95rem;margin-top:2px}
-.flash-btns{display:flex;gap:6px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+  /* ---------------- PÁGINA 23 ---------------- */
+  {
+    page: 23,
+    title: "Unit 2 – Natural vs Man-made Sounds",
+    objective: "Classify natural and man-made sounds",
+    activities: [
+      {
+        type: "flashcards",
+        instruction: "Vocabulary for sounds:",
+        words: [
+          { emoji: "🦉", word: "owl", es: "búho" },
+          { emoji: "🚒", word: "fire engine", es: "camión de bomberos" },
+          { emoji: "🏞️", word: "river", es: "río" },
+          { emoji: "📻", word: "radio", es: "radio" },
+          { emoji: "🎸", word: "guitar", es: "guitarra" },
+          { emoji: "💨", word: "wind", es: "viento" }
+        ]
+      },
+      {
+        type: "quiz",
+        instruction: "Is this sound natural or man-made?",
+        question: "The sound of an owl is...",
+        options: ["natural", "man-made"],
+        correct: 0
+      },
+      {
+        type: "quiz",
+        instruction: "Is this sound natural or man-made?",
+        question: "The sound of a fire engine is...",
+        options: ["natural", "man-made"],
+        correct: 1
+      }
+    ]
+  },
 
-/* MATCHING */
-.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:30px}
-.match-col{display:flex;flex-direction:column;gap:12px}
-.match-item{padding:16px;border-radius:14px;background:#eef2ff;font-weight:700;font-size:1.1rem;text-align:center;border:3px solid transparent}
-.match-item.selected{border-color:var(--primary);background:#dce4ff}
-.match-item.matched{background:#d8f5f0;border-color:var(--green);cursor:default;opacity:.7}
-.match-item .emoji{font-size:2rem}
+  /* ---------------- PÁGINA 24 ---------------- */
+  {
+    page: 24,
+    title: "Language in Action – Camping Gear",
+    objective: "Learn words for camping equipment",
+    activities: [
+      {
+        type: "flashcards",
+        instruction: "Look, listen and repeat camping equipment.",
+        words: [
+          { emoji: "🎒", word: "rucksack", es: "mochila" },
+          { emoji: "🛏️", word: "sleeping bag", es: "saco de dormir" },
+          { emoji: "🪢", word: "rope", es: "cuerda" },
+          { emoji: "🔦", word: "torch", es: "linterna" },
+          { emoji: "🗺️", word: "map", es: "mapa" },
+          { emoji: "🧭", word: "compass", es: "brújula" },
+          { emoji: "🧥", word: "raincoat", es: "chubasquero" },
+          { emoji: "🔭", word: "binoculars", es: "prismáticos" }
+        ]
+      },
+      {
+        type: "quiz",
+        instruction: "Which item helps us to keep warm?",
+        question: "To keep warm we use a...",
+        options: ["sleeping bag", "compass"],
+        correct: 0
+      },
+      {
+        type: "quiz",
+        instruction: "Which item helps us to find our way?",
+        question: "To find our way we use a...",
+        options: ["raincoat", "map and compass"],
+        correct: 1
+      }
+    ]
+  },
 
-/* INPUT */
-input[type=text],textarea{width:100%;padding:14px;border:3px solid #dce4ff;border-radius:14px;font-size:1.1rem;font-family:inherit;margin-bottom:6px}
-input[type=text]:focus,textarea:focus{outline:none;border-color:var(--primary)}
-.form-row{margin-bottom:16px}
-.form-row label{font-weight:700;display:block;margin-bottom:6px}
+  /* ---------------- PÁGINA 25 ---------------- */
+  {
+    page: 25,
+    title: "Unit 2 – Grammar (Present Continuous)",
+    objective: "Use 'am/is/are + verb-ing' to talk about actions in progress",
+    activities: [
+      {
+        type: "text",
+        instruction: "Grammar Box",
+        html: "<p><b>What are you doing?</b><br>I am packing my rucksack.<br><i>pack → packing | make → making | swim → swimming</i></p>"
+      },
+      {
+        type: "quiz",
+        instruction: "Look at the picture and answer.",
+        question: "What is Pat doing?",
+        options: ["She is making lunch.", "She is looking at the birds."],
+        correct: 1
+      },
+      {
+        type: "type",
+        instruction: "Complete the sentence (pack -> ?)",
+        question: "I am ... my rucksack.",
+        answer: "packing",
+        hint: "Add -ing to pack."
+      },
+      {
+        type: "build",
+        instruction: "Build the sentence:",
+        words: ["Pat", "is", "looking", "at", "the", "birds"],
+        correct: "Pat is looking at the birds"
+      }
+    ]
+  },
 
-/* SENTENCE BUILDER */
-.word-bank,.sentence-slot{display:flex;flex-wrap:wrap;gap:8px;min-height:56px;padding:10px;border-radius:14px}
-.sentence-slot{background:#fff8e1;border:3px dashed var(--yellow);margin-bottom:12px}
-.word-bank{background:#eef2ff}
-.word-chip{background:var(--primary);color:#fff;padding:10px 16px;border-radius:20px;font-weight:700;cursor:pointer}
-.word-chip:hover{background:var(--primary-dark)}
+  /* ---------------- PÁGINA 26 ---------------- */
+  {
+    page: 26,
+    title: "Storytime – Let's pack!",
+    objective: "Understand the story and practice listening",
+    activities: [
+      {
+        type: "text",
+        instruction: "Story Reading",
+        html: "<p>ROLO: <i>What are you doing?</i><br>Children: <i>We're getting ready for our school camping trip!</i></p>"
+      },
+      {
+        type: "quiz",
+        instruction: "Answer the question based on the story.",
+        question: "What are the children getting ready for?",
+        options: ["A birthday party", "A school camping trip"],
+        correct: 1
+      }
+    ]
+  },
 
-/* BOOK CARD */
-.book-card{background:linear-gradient(160deg,#4361ee,#f72585);color:#fff;border-radius:20px;padding:26px;box-shadow:var(--shadow)}
-.book-card h3{font-size:1.6rem;margin-bottom:10px}
-.book-card p{margin:6px 0}
+  /* ---------------- PÁGINA 27 ---------------- */
+  {
+    page: 27,
+    title: "Storytime – True or False & Communication",
+    objective: "Check story comprehension and practice dialogue",
+    activities: [
+      {
+        type: "quiz",
+        instruction: "Read and choose True or False.",
+        question: "1. The children are going on a school camping trip.",
+        options: ["True", "False"],
+        correct: 0
+      },
+      {
+        type: "quiz",
+        instruction: "Read and choose True or False.",
+        question: "2. Cody's dad is helping the children.",
+        options: ["True", "False"],
+        correct: 1,
+        hint: "ROLO the robot is helping them."
+      },
+      {
+        type: "speaking",
+        instruction: "Practice the dialogue with a partner.",
+        question: "Larry: Diana, what are you doing?",
+        model: "I'm getting ready for our school camping trip. Can you help me?"
+      }
+    ]
+  },
 
-/* NAV */
-.module-nav{display:flex;justify-content:space-between;gap:10px;margin-top:24px}
-.back-home{background:#e6ecff;color:var(--primary);padding:10px 20px;border-radius:30px;font-weight:700}
+  /* ---------------- PÁGINA 28 ---------------- */
+  {
+    page: 28,
+    title: "Language in Action – Camping Actions",
+    objective: "Learn rules and action verbs for camping",
+    activities: [
+      {
+        type: "match",
+        instruction: "Match the action verb with the picture/object.",
+        pairs: [
+          { word: "feed", emoji: "🐻" },      // wild animals
+          { word: "put up", emoji: "⛺" },    // a tent
+          { word: "drop", emoji: "🗑️" },      // litter
+          { word: "light", emoji: "🔥" }     // a campfire
+        ]
+      },
+      {
+        type: "quiz",
+        instruction: "Choose the correct rule response.",
+        question: "Can I feed the bear?",
+        options: ["Yes, sure!", "No! We mustn't feed wild animals."],
+        correct: 1
+      }
+    ]
+  },
 
-/* TEACHER PANEL */
-#teacherPanel{position:fixed;right:0;top:0;height:100%;width:280px;background:#1d3557;color:#fff;padding:24px;transform:translateX(100%);transition:transform .3s;z-index:200;overflow-y:auto;box-shadow:-4px 0 20px rgba(0,0,0,.3)}
-#teacherPanel.open{transform:translateX(0)}
-#teacherPanel h3{margin-bottom:16px}
-#teacherPanel button{display:block;width:100%;margin-bottom:10px;text-align:left}
-.tp-toggle{position:fixed;right:16px;bottom:16px;z-index:150;background:var(--accent);color:#fff;border-radius:50%;width:60px;height:60px;font-size:1.6rem;box-shadow:var(--shadow)}
+  /* ---------------- PÁGINA 29 ---------------- */
+  {
+    page: 29,
+    title: "Unit 2 – Grammar (Must / Mustn't)",
+    objective: "Use 'must' for obligation and 'mustn't' for prohibition",
+    activities: [
+      {
+        type: "text",
+        instruction: "Grammar Rules",
+        html: "<p><b>Must / Mustn't</b><br>• You <b>must</b> stay away from wild animals. (Obligation)<br>• You <b>mustn't</b> go near wild animals. (Prohibition)</p>"
+      },
+      {
+        type: "quiz",
+        instruction: "Choose 'must' or 'mustn't'.",
+        question: "You ... feed the animals at the zoo.",
+        options: ["must", "mustn't"],
+        correct: 1
+      },
+      {
+        type: "quiz",
+        instruction: "Choose 'must' or 'mustn't'.",
+        question: "You ... be quiet at the cinema.",
+        options: ["must", "mustn't"],
+        correct: 0
+      },
+      {
+        type: "quiz",
+        instruction: "Choose 'must' or 'mustn't'.",
+        question: "You ... run near the swimming pool.",
+        options: ["must", "mustn't"],
+        correct: 1
+      }
+    ]
+  },
 
-/* BADGES */
-.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-.badge{background:#eee;border-radius:14px;padding:10px 14px;font-size:.85rem;font-weight:700;opacity:.4;filter:grayscale(1)}
-.badge.earned{opacity:1;filter:none;background:#fff8e1;box-shadow:var(--shadow)}
+  /* ---------------- PÁGINA 30 ---------------- */
+  {
+    page: 30,
+    title: "Unit 2 – Listening & Values (Safe Camping)",
+    objective: "Identify safe camping behaviors",
+    activities: [
+      {
+        type: "quiz",
+        instruction: "Which option is safe?",
+        question: "Water safety:",
+        options: ["Drink water from rivers.", "Drink bottled water."],
+        correct: 1
+      },
+      {
+        type: "quiz",
+        instruction: "Which option is safe?",
+        question: "Animal safety:",
+        options: ["Stay away from wild animals.", "Feed wild animals."],
+        correct: 0
+      },
+      {
+        type: "quiz",
+        instruction: "Which option is safe?",
+        question: "Tent safety:",
+        options: ["Cook inside a tent.", "Cook away from tents or trees."],
+        correct: 1
+      }
+    ]
+  },
 
-/* SPEAKING */
-.speak-card{text-align:center;font-size:1.4rem}
-.speak-buttons{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+  /* ---------------- PÁGINA 31 ---------------- */
+  {
+    page: 31,
+    title: "Unit 2 – Reading & Writing (Social Science)",
+    objective: "Read camping rules and select correct modal verbs",
+    activities: [
+      {
+        type: "quiz",
+        instruction: "Read and choose the correct rule.",
+        question: "1. You ... put up your tent near water or under a tree.",
+        options: ["must", "mustn't"],
+        correct: 1
+      },
+      {
+        type: "quiz",
+        instruction: "Read and choose the correct rule.",
+        question: "2. You ... light a campfire away from the trees.",
+        options: ["must", "mustn't"],
+        correct: 0
+      },
+      {
+        type: "quiz",
+        instruction: "Read and choose the correct rule.",
+        question: "5. You ... take a map of the area.",
+        options: ["must", "mustn't"],
+        correct: 0
+      }
+    ]
+  },
 
-/* CONFETTI */
-#confetti{position:fixed;inset:0;pointer-events:none;z-index:300}
+  /* ---------------- PÁGINA 32 ---------------- */
+  {
+    page: 32,
+    title: "CLIL Geography – Map Symbols",
+    objective: "Understand map symbols and location choices",
+    activities: [
+      {
+        type: "flashcards",
+        instruction: "Learn map symbols:",
+        words: [
+          { emoji: "🚉", word: "train station", es: "estación de tren" },
+          { emoji: "📞", word: "telephone", es: "teléfono" },
+          { emoji: "⛺", word: "camping area", es: "zona de campamento" },
+          { emoji: "ℹ️", word: "information point", es: "punto de información" },
+          { emoji: "🧺", word: "picnic area", es: "zona de picnic" },
+          { emoji: "🅿️", word: "parking area", es: "aparcamiento" }
+        ]
+      },
+      {
+        type: "quiz",
+        instruction: "Where is it best to put up a tent?",
+        question: "Putting up a tent near a campfire:",
+        options: ["near the campfire", "away from the campfire"],
+        correct: 1
+      }
+    ]
+  },
 
-/* PAGE PILLS */
-.page-pills{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
-.page-pill{background:#eef2ff;padding:8px 14px;border-radius:12px;font-weight:700;cursor:pointer;border:2px solid transparent}
-.page-pill:hover{border-color:var(--primary)}
+  /* ---------------- PÁGINA 33 ---------------- */
+  {
+    page: 33,
+    title: "Geography Project – One Foot Island",
+    objective: "Read and count map symbols on an island poster",
+    activities: [
+      {
+        type: "type",
+        instruction: "Count the train stations from page 33.",
+        question: "There are ... train stations.",
+        answer: "2",
+        hint: "Type the number 2"
+      }
+    ]
+  },
 
-/* FINAL RESULT */
-.result-big{font-size:3rem;text-align:center;margin:10px 0}
-.result-section{background:#eef2ff;border-radius:14px;padding:14px 18px;margin:10px 0}
+  /* ---------------- PÁGINA 34 ---------------- */
+  {
+    page: 34,
+    title: "Sounds and Words – Spelling (-ing)",
+    objective: "Learn rules for adding -ing to verbs",
+    activities: [
+      {
+        type: "text",
+        instruction: "Spelling Rules for -ing:",
+        html: "<ul><li>go → going</li><li>give → giving (drop the -e)</li><li>win → winning (double the consonant)</li><li>pick → picking</li></ul>"
+      },
+      {
+        type: "type",
+        instruction: "Write the opposite/correct -ing form:",
+        question: "close → ?",
+        answer: "closing",
+        hint: "Drop the 'e' and add 'ing'."
+      },
+      {
+        type: "type",
+        instruction: "Write the -ing form:",
+        question: "sit → ?",
+        answer: "sitting",
+        hint: "Double the 't'."
+      }
+    ]
+  },
 
-@media(max-width:640px){
-  .match-wrap{grid-template-columns:1fr}
-  #home h2{font-size:2rem}
-  .header-top{flex-direction:column;align-items:flex-start}
-}
-</style>
-</head>
-<body>
+  /* ---------------- PÁGINA 35 ---------------- */
+  {
+    page: 35,
+    title: "Unit 2 Review – Self-Assessment",
+    objective: "Review Unit 2 vocabulary and rules",
+    activities: [
+      {
+        type: "build",
+        instruction: "Build the rule sentence:",
+        words: ["We", "mustn't", "make", "noise"],
+        correct: "We mustn't make noise"
+      },
+      {
+        type: "quiz",
+        instruction: "What can you do now?",
+        question: "Can you describe actions happening now using -ing?",
+        options: ["Yes, I can!", "I need more practice."],
+        correct: 0
+      }
+    ]
+  },
 
-<header>
-  <div class="header-top">
-    <div class="logo"><h1>🏕️ I WONDER 3</h1><p>Interactive English Class — Let's learn, play and speak English!</p></div>
-    <div class="header-stats">
-      <span class="stat">⭐ <span id="xp">0</span> XP</span>
-      <span class="stat">🔥 <span id="streak">0</span></span>
-      <span class="stat" id="lessonLabel">Home</span>
-    </div>
-  </div>
-  <div class="progress-wrap">
-    <div class="progress-label">CLASS PROGRESS</div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  </div>
-</header>
+  /* ---------------- PÁGINA 36 ---------------- */
+  {
+    page: 36,
+    title: "Wonder Tales 1 – The Cracked Pot (Part 1)",
+    objective: "Read a story from China and practice listening",
+    activities: [
+      {
+        type: "flashcards",
+        instruction: "Story Vocabulary:",
+        words: [
+          { emoji: "🏺", word: "pot", es: "vasija / maceta" },
+          { emoji: "⚡", word: "crack", es: "grieta" },
+          { emoji: "💧", word: "water", es: "agua" },
+          { emoji: "🛣️", word: "road", es: "camino / carretera" }
+        ]
+      },
+      {
+        type: "quiz",
+        instruction: "Understand the story:",
+        question: "Why can't the old pot hold much water?",
+        options: ["Because it's too big", "Because it's got a crack"],
+        correct: 1
+      }
+    ]
+  },
 
-<!-- HOME -->
-<section id="home" class="screen active">
-  <div class="hero-emoji">🎒</div>
-  <h2>Interactive English Class</h2>
-  <p class="sub">Based on Unit 2: Camping — Vocabulary, Grammar, Speaking & Games</p>
-  <button class="btn btn-lg btn-accent" onclick="goDashboard()">▶️ START LEARNING</button>
-  <div class="badges" style="justify-content:center;margin-top:26px" id="homeBadges"></div>
-</section>
-
-<!-- DASHBOARD -->
-<section id="dashboard" class="screen">
-  <div class="container">
-    <h2 style="color:var(--primary-dark);margin-bottom:6px">Choose an activity 👇</h2>
-    <p style="color:var(--muted)">Tip: use 📖 <b>Follow the Book</b> to sync with your physical book.</p>
-    <div class="dash-grid" id="dashGrid"></div>
-  </div>
-</section>
-
-<!-- GENERIC MODULE CONTAINER -->
-<section id="module" class="screen">
-  <div class="container">
-    <div class="module-header">
-      <button class="back-home" onclick="goDashboard()">🏠 Home</button>
-      <h2 id="modTitle"></h2>
-    </div>
-    <div id="modBody"></div>
-  </div>
-</section>
-
-<!-- TEACHER PANEL -->
-<button class="tp-toggle" onclick="toggleTeacher()">👨‍🏫</button>
-<aside id="teacherPanel">
-  <h3>👨‍🏫 Teacher Mode</h3>
-  <button class="btn btn-sm btn-yellow" onclick="showAnswers=!showAnswers;alert('Show answers: '+showAnswers)">👁️ Toggle Answers</button>
-  <button class="btn btn-sm btn-green" onclick="addXP(30);toast('+30 XP Speaking ⭐')">⭐ Mark Speaking: Excellent</button>
-  <button class="btn btn-sm btn-ghost" onclick="addXP(20);toast('+20 XP Good 👍')">👍 Mark Speaking: Good</button>
-  <button class="btn btn-sm btn-orange" onclick="toast('🔁 Try again')">🔁 Speaking: Try again</button>
-  <hr style="margin:14px 0;border-color:rgba(255,255,255,.2)">
-  <button class="btn btn-sm btn-accent" onclick="resetClass()">🔄 Reset Class</button>
-  <hr style="margin:14px 0;border-color:rgba(255,255,255,.2)">
-  <p style="font-size:.85rem;opacity:.8">XP: <b id="tpXp">0</b><br>Streak: <b id="tpStreak">0</b><br>Badges: <b id="tpBadges">0</b></p>
-</aside>
-
-<canvas id="confetti"></canvas>
-
-<script>
-/* ============================================================
-   I WONDER 3 — Interactive English Class
-   Original educational content based on standard A1-A2 topics:
-   Camping vocabulary, Present Continuous, Must/Mustn't, Sounds.
-   Vanilla JS. Works on GitHub Pages. Saves progress in localStorage.
-   ============================================================ */
-
-/* ---------- STATE ---------- */
-let state = JSON.parse(localStorage.getItem('iw3')||'{}');
-state.xp = state.xp||0;
-state.streak = state.streak||0;
-state.badges = state.badges||[];
-state.done = state.done||[];
-let showAnswers=false;
-
-function save(){localStorage.setItem('iw3',JSON.stringify(state));}
-function addXP(n){state.xp+=n;render();save();fireConfetti();}
-function bumpStreak(ok){state.streak = ok? state.streak+1 : 0;render();save();}
-function earnBadge(b){if(!state.badges.includes(b)){state.badges.push(b);toast('🏆 Badge earned: '+b);save();render();}}
-function markDone(id){if(!state.done.includes(id)){state.done.push(id);save();}}
-
-function render(){
-  document.getElementById('xp').textContent=state.xp;
-  document.getElementById('streak').textContent=state.streak;
-  document.getElementById('tpXp').textContent=state.xp;
-  document.getElementById('tpStreak').textContent=state.streak;
-  document.getElementById('tpBadges').textContent=state.badges.length;
-  let pct=Math.min(100,Math.round(state.done.length/MODULES.length*100));
-  document.getElementById('progressFill').style.width=pct+'%';
-  renderBadges();
-}
-function renderBadges(){
-  const all=[['🏕️','Camping Explorer'],['🎧','Great Listener'],['🗣️','Super Speaker'],['📚','Reading Star'],['🧠','Grammar Hero'],['🏆','English Champion']];
-  document.getElementById('homeBadges').innerHTML=all.map(([e,n])=>
-    `<span class="badge ${state.badges.includes(n)?'earned':''}">${e} ${n}</span>`).join('');
-}
-
-/* ---------- NAV ---------- */
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-function goDashboard(){show('dashboard');buildDash();document.getElementById('lessonLabel').textContent='Menu';}
-function openModule(m){
-  show('module');
-  document.getElementById('modTitle').textContent=m.icon+' '+m.title;
-  document.getElementById('lessonLabel').textContent=m.title;
-  document.getElementById('modBody').innerHTML='';
-  m.build();
-}
-
-/* ---------- SPEECH ---------- */
-function speak(text,rate=1){
-  if(!('speechSynthesis'in window)){alert('Speech not supported in this browser.');return;}
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='en-US';u.rate=rate;
-  speechSynthesis.speak(u);
-}
-
-/* ---------- TOAST + CONFETTI ---------- */
-function toast(msg){
-  const t=document.createElement('div');
-  t.textContent=msg;
-  t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1d3557;color:#fff;padding:12px 24px;border-radius:30px;font-weight:700;z-index:400;box-shadow:0 8px 24px rgba(0,0,0,.3)';
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(),1800);
-}
-function fireConfetti(){
-  const cv=document.getElementById('confetti');const ctx=cv.getContext('2d');
-  cv.width=innerWidth;cv.height=innerHeight;
-  let parts=Array.from({length:80},()=>({x:Math.random()*cv.width,y:-20,vx:(Math.random()-.5)*4,vy:Math.random()*4+2,c:['#f72585','#4361ee','#ffbf00','#2ec4b6'][Math.floor(Math.random()*4)],s:Math.random()*8+4}));
-  let frame=0;
-  (function anim(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.1;ctx.fillStyle=p.c;ctx.fillRect(p.x,p.y,p.s,p.s);});
-    frame++;if(frame<90)requestAnimationFrame(anim);else ctx.clearRect(0,0,cv.width,cv.height);
-  })();
-}
-
-/* ---------- TEACHER ---------- */
-function toggleTeacher(){document.getElementById('teacherPanel').classList.toggle('open');}
-function resetClass(){if(confirm('Reset all progress?')){state={xp:0,streak:0,badges:[],done:[]};save();render();toast('Class reset!');goDashboard();}}
-
-/* ============================================================
-   REUSABLE ACTIVITY BUILDERS
-   ============================================================ */
-
-/* Multiple choice quiz */
-function quizBlock(q,opts,correctIdx,hint,badge){
-  const wrap=document.createElement('div');wrap.className='card';
-  wrap.innerHTML=`<div class="activity-title">${q}</div><div class="options"></div><div class="hint hidden">💡 ${hint||''}</div><div class="feedback"></div>`;
-  const optDiv=wrap.querySelector('.options');
-  opts.forEach((o,i)=>{
-    const b=document.createElement('button');b.className='opt';b.textContent=o;
-    b.onclick=()=>{
-      if(i===correctIdx){b.classList.add('correct');wrap.querySelector('.feedback').textContent='✅ Correct! +10 XP';wrap.querySelector('.feedback').className='feedback good';addXP(10);bumpStreak(true);if(badge)earnBadge(badge);
-        optDiv.querySelectorAll('.opt').forEach(x=>x.disabled=true);}
-      else{b.classList.add('wrong');wrap.querySelector('.feedback').textContent='❌ Try again!';wrap.querySelector('.feedback').className='feedback bad';wrap.querySelector('.hint').classList.remove('hidden');bumpStreak(false);}
-    };
-    optDiv.appendChild(b);
-  });
-  return wrap;
-}
-
-/* Flashcards */
-function flashCards(list,badge){
-  const wrap=document.createElement('div');wrap.className='flash-grid';
-  list.forEach(c=>{
-    const d=document.createElement('div');d.className='flash';
-    d.innerHTML=`<div class="emoji">${c.e}</div><div class="word">${c.w}</div><div class="ipa">${c.ipa||''}</div><div class="es">${c.es||''}</div>
-    <div class="flash-btns">
-      <button class="btn btn-sm btn-green" onclick="speak('${c.w}')">🔊</button>
-      <button class="btn btn-sm btn-yellow" onclick="speak('${c.w}',.6)">🐢</button>
-    </div>`;
-    wrap.appendChild(d);
-  });
-  if(badge)earnBadge(badge);
-  return wrap;
-}
-
-/* Matching (word ↔ emoji) */
-function matchGame(pairs,badge){
-  const wrap=document.createElement('div');wrap.className='card';
-  wrap.innerHTML=`<div class="activity-title">Match the word with the picture</div><div class="feedback"></div><div class="match-wrap"><div class="match-col left"></div><div class="match-col right"></div></div>`;
-  const left=wrap.querySelector('.left'),right=wrap.querySelector('.right');
-  const shuffled=[...pairs].sort(()=>Math.random()-.5);
-  let sel=null,matched=0;
-  pairs.forEach((p,i)=>{const el=document.createElement('div');el.className='match-item';el.textContent=p.w;el.dataset.k=i;el.onclick=()=>selectMatch(el,'w');left.appendChild(el);});
-  shuffled.forEach(p=>{const el=document.createElement('div');el.className='match-item';el.innerHTML=`<span class="emoji">${p.e}</span>`;el.dataset.k=pairs.indexOf(p);el.onclick=()=>selectMatch(el,'e');right.appendChild(el);});
-  function selectMatch(el,type){
-    if(el.classList.contains('matched'))return;
-    if(!sel){sel={el,type,k:el.dataset.k};el.classList.add('selected');return;}
-    if(sel.type===type){sel.el.classList.remove('selected');sel={el,type,k:el.dataset.k};el.classList.add('selected');return;}
-    if(sel.k===el.dataset.k){
-      sel.el.classList.remove('selected');sel.el.classList.add('matched');el.classList.add('matched');
-      matched++;addXP(5);
-      if(matched===pairs.length){wrap.querySelector('.feedback').textContent='🎉 All matched! +bonus';wrap.querySelector('.feedback').className='feedback good';if(badge)earnBadge(badge);}
-    }else{
-      el.classList.add('wrong');sel.el.classList.add('wrong');
-      setTimeout(()=>{el.classList.remove('wrong','selected');sel.el.classList.remove('wrong','selected');},600);
-    }
-    sel=null;
+  /* ---------------- PÁGINA 37 ---------------- */
+  {
+    page: 37,
+    title: "Wonder Tales 1 – The Cracked Pot (Part 2)",
+    objective: "Understand the moral of the story",
+    activities: [
+      {
+        type: "type",
+        instruction: "Complete the summary word:",
+        question: "The old pot waters the woman's ...",
+        answer: "flowers",
+        hint: "Beautiful colorful plants."
+      },
+      {
+        type: "text",
+        instruction: "Wonder Values",
+        html: "<p style='color:var(--primary-dark); font-weight:bold;'>🌸 We are all useful in our own way!</p>"
+      }
+    ]
   }
-  return wrap;
-}
-
-/* Sentence builder */
-function sentenceBuilder(words,correct,badge){
-  const wrap=document.createElement('div');wrap.className='card';
-  wrap.innerHTML=`<div class="activity-title">Build the sentence</div><p class="instruction">Tap the words in the correct order.</p><div class="sentence-slot"></div><div class="word-bank"></div><div style="margin-top:12px"><button class="btn btn-sm btn-green check">✅ Check</button> <button class="btn btn-sm btn-ghost clr">🗑️ Clear</button></div><div class="feedback"></div>`;
-  const slot=wrap.querySelector('.sentence-slot'),bank=wrap.querySelector('.word-bank');
-  const shuffled=[...words].sort(()=>Math.random()-.5);
-  shuffled.forEach(w=>{const c=document.createElement('span');c.className='word-chip';c.textContent=w;c.onclick=()=>{slot.appendChild(c);};bank.appendChild(c);});
-  wrap.querySelector('.clr').onclick=()=>{[...slot.children].forEach(c=>bank.appendChild(c));};
-  wrap.querySelector('.check').onclick=()=>{
-    const built=[...slot.children].map(c=>c.textContent).join(' ');
-    const fb=wrap.querySelector('.feedback');
-    if(built===correct){fb.textContent='✅ Perfect! +10 XP';fb.className='feedback good';addXP(10);bumpStreak(true);speak(correct);if(badge)earnBadge(badge);}
-    else{fb.textContent='❌ Not yet. Listen: try again!';fb.className='feedback bad';speak(correct,.7);bumpStreak(false);}
-  };
-  return wrap;
-}
-
-/* Fill in the blank / typing */
-function typeBlock(prompt,answer,hint,badge){
-  const wrap=document.createElement('div');wrap.className='card';
-  wrap.innerHTML=`<div class="activity-title">${prompt}</div><input type="text" placeholder="Type here..."><div><button class="btn btn-sm btn-green">✅ Check</button> <button class="btn btn-sm btn-yellow listen">🔊 Listen</button></div><div class="hint hidden">💡 ${hint||''}</div><div class="feedback"></div>`;
-  const inp=wrap.querySelector('input');
-  wrap.querySelector('.listen').onclick=()=>speak(answer);
-  wrap.querySelector('.btn-green').onclick=()=>{
-    const fb=wrap.querySelector('.feedback');
-    if(inp.value.trim().toLowerCase()===answer.toLowerCase()){fb.textContent='✅ Correct! +10 XP';fb.className='feedback good';addXP(10);bumpStreak(true);if(badge)earnBadge(badge);}
-    else{fb.textContent='❌ Try again!';fb.className='feedback bad';wrap.querySelector('.hint').classList.remove('hidden');bumpStreak(false);}
-  };
-  return wrap;
-}
-
-/* Speaking card */
-function speakingCard(question,model,badge){
-  const wrap=document.createElement('div');wrap.className='card speak-card';
-  wrap.innerHTML=`<div class="activity-title">🎤 Speaking Challenge</div><p style="font-size:1.4rem;margin:14px 0">"${question}"</p>
-  <div class="speak-buttons">
-    <button class="btn btn-yellow" onclick="speak('${model.replace(/'/g,"\\'")}')">🔊 Hear Model</button>
-    <button class="btn btn-green" onclick="addXP(30);earnBadge('Super Speaker');toast('⭐ Excellent! +30 XP')">🎤 I'm ready → ⭐ Excellent</button>
-    <button class="btn btn-ghost" onclick="addXP(20);toast('👍 Good! +20 XP')">👍 Good</button>
-    <button class="btn btn-orange" onclick="toast('🔁 Try again')">🔁 Try again</button>
-  </div>`;
-  return wrap;
-}
-
-/* Listening: play sentence then choose */
-function listeningBlock(sentence,question,opts,correctIdx,badge){
-  const wrap=document.createElement('div');wrap.className='card';
-  wrap.innerHTML=`<div class="activity-title">🎧 Listen and choose</div>
-  <button class="btn btn-yellow" onclick="speak('${sentence.replace(/'/g,"\\'")}')">🔊 Play</button>
-  <button class="btn btn-ghost btn-sm" onclick="speak('${sentence.replace(/'/g,"\\'")}',.6)">🐢 Slow</button>
-  <p class="instruction" style="margin-top:12px">${question}</p><div class="options"></div><div class="feedback"></div>`;
-  const optDiv=wrap.querySelector('.options');
-  opts.forEach((o,i)=>{const b=document.createElement('button');b.className='opt';b.textContent=o;
-    b.onclick=()=>{const fb=wrap.querySelector('.feedback');
-      if(i===correctIdx){b.classList.add('correct');fb.textContent='✅ Correct! +10 XP';fb.className='feedback good';addXP(10);if(badge)earnBadge(badge);optDiv.querySelectorAll('.opt').forEach(x=>x.disabled=true);}
-      else{b.classList.add('wrong');fb.textContent='❌ Listen again!';fb.className='feedback bad';}
-    };optDiv.appendChild(b);});
-  return wrap;
-}
-
-/* Section helpers */
-function objective(text){const d=document.createElement('div');d.className='objective';d.textContent='🎯 '+text;return d;}
-function heading(text){const d=document.createElement('div');d.className='card';d.innerHTML=text;return d;}
-function nextBtn(label='Great job! Back to menu'){const b=document.createElement('button');b.className='btn btn-accent btn-lg';b.style.margin='10px auto';b.style.display='block';b.textContent='➡️ '+label;b.onclick=goDashboard;return b;}
-function appendAll(arr){const body=document.getElementById('modBody');arr.forEach(el=>body.appendChild(el));}
-
-/* ============================================================
-   MODULE DEFINITIONS  (original content, camping topic)
-   ============================================================ */
-const MODULES=[
-
-{icon:'📖',title:'Follow the Book',desc:'Sync with your book',build:()=>{
-  const body=document.getElementById('modBody');
-  const c=document.createElement('div');c.className='card';
-  c.innerHTML=`<div class="activity-title">📖 Follow the Book Mode</div>
-  <p class="instruction">Say "Open your book on page ___", then start the matching digital activity.</p>
-  <p style="color:var(--muted);font-size:.9rem">⚠️ Adjust page numbers to match your printed book if they differ.</p>
-  <div class="page-pills" id="pagePills"></div>
-  <div id="pageInfo"></div>`;
-  body.appendChild(c);
-  const pages=[16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40];
-  const pills=c.querySelector('#pagePills');
-  pages.forEach(p=>{const b=document.createElement('div');b.className='page-pill';b.textContent='Page '+p;b.onclick=()=>{
-    c.querySelector('#pageInfo').innerHTML=`<div class="objective">📘 BOOK PAGE ${p} — choose a related digital activity from the menu (Vocabulary, Grammar, Speaking, etc.).</div>`;
-  };pills.appendChild(b);});
-}},
-
-{icon:'👋',title:'Warm Up',desc:'Start the class',build:()=>{
-  const qs=['How are you today?','What\'s your favourite colour?','What\'s your favourite book?','Do you like camping?','Have you ever been camping?'];
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Warm up and start speaking English.'));
-  qs.forEach(q=>{const c=document.createElement('div');c.className='card';
-    c.innerHTML=`<div class="activity-title">👋 ${q}</div>
-    <button class="btn btn-yellow btn-sm" onclick="speak('${q.replace(/'/g,"\\'")}')">🔊 Listen</button>
-    <button class="btn btn-green btn-sm" onclick="addXP(10);toast('👍 Nice answer! +10 XP')">✅ Answered</button>`;
-    body.appendChild(c);});
-  body.appendChild(nextBtn());
-}},
-
-{icon:'🎒',title:'Camping Vocabulary',desc:'Learn the words',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Learn 10 camping words with sound and translation.'));
-  body.appendChild(flashCards([
-    {e:'⛺',w:'tent',ipa:'/tent/',es:'carpa'},
-    {e:'🛌',w:'sleeping bag',ipa:'/ˈsliːpɪŋ bæɡ/',es:'saco de dormir'},
-    {e:'🎒',w:'rucksack',ipa:'/ˈrʌksæk/',es:'mochila'},
-    {e:'🪢',w:'rope',ipa:'/rəʊp/',es:'cuerda'},
-    {e:'🔭',w:'binoculars',ipa:'/bɪˈnɒkjələz/',es:'binoculares'},
-    {e:'🧥',w:'raincoat',ipa:'/ˈreɪnkəʊt/',es:'impermeable'},
-    {e:'🗺️',w:'map',ipa:'/mæp/',es:'mapa'},
-    {e:'🧭',w:'compass',ipa:'/ˈkʌmpəs/',es:'brújula'},
-    {e:'🔦',w:'torch',ipa:'/tɔːtʃ/',es:'linterna'},
-    {e:'🔥',w:'campfire',ipa:'/ˈkæmpfaɪə/',es:'fogata'}
-  ],'Camping Explorer'));
-  body.appendChild(nextBtn());
-}},
-
-{icon:'🧩',title:'Vocabulary Game',desc:'Match & win',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Match each word with the correct picture.'));
-  body.appendChild(matchGame([
-    {w:'tent',e:'⛺'},{w:'map',e:'🗺️'},{w:'torch',e:'🔦'},{w:'rope',e:'🪢'},
-    {w:'compass',e:'🧭'},{w:'rucksack',e:'🎒'}
-  ],'Camping Explorer'));
-  body.appendChild(quizBlock('What is this? 🔦',['map','torch','tent','rope'],1,'It helps you see in the dark.'));
-  body.appendChild(quizBlock('What is this? 🧭',['compass','rope','tent','raincoat'],0,'It shows you north, south, east and west.'));
-  body.appendChild(nextBtn());
-}},
-
-{icon:'🧠',title:'Grammar: Present Continuous',desc:'am/is/are + -ing',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Learn Present Continuous: SUBJECT + am/is/are + verb-ing.'));
-  body.appendChild(heading(`<div class="activity-title">📘 How it works</div>
-    <p>We use it for actions happening <b>now</b>.</p>
-    <p style="font-size:1.2rem;margin:10px 0"><b>SUBJECT + am / is / are + VERB-ing</b></p>
-    <p>I <b>am</b> packing. → I'm packing.<br>He <b>is</b> swimming. → He's swimming.<br>They <b>are</b> walking. → They're walking.</p>
-    <button class="btn btn-yellow btn-sm" onclick="speak('I am packing. He is swimming. They are walking.')">🔊 Listen</button>`));
-  body.appendChild(quizBlock('He ___ swimming.',['am','is','are'],1,'Use "is" with he / she / it.','Grammar Hero'));
-  body.appendChild(quizBlock('They ___ playing games.',['is','am','are'],2,'Use "are" with they / we / you.','Grammar Hero'));
-  body.appendChild(quizBlock('She is ___.',['swim','swims','swimming'],2,'After am/is/are we add -ing.','Grammar Hero'));
-  body.appendChild(nextBtn());
-}},
-
-{icon:'✍️',title:'Add -ING',desc:'Spelling rules',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Practise the -ing spelling rules.'));
-  body.appendChild(heading(`<div class="activity-title">Rules</div>
-  <p>• go → going (just add -ing)<br>• make → making (drop the final -e)<br>• sit → sitting (double the last letter)</p>`));
-  body.appendChild(typeBlock('make → ?','making','Drop the -e, add -ing.','Grammar Hero'));
-  body.appendChild(typeBlock('sit → ?','sitting','Double the t.','Grammar Hero'));
-  body.appendChild(typeBlock('go → ?','going','Just add -ing.','Grammar Hero'));
-  body.appendChild(typeBlock('smile → ?','smiling','Drop the -e.','Grammar Hero'));
-  body.appendChild(nextBtn());
-}},
-
-{icon:'🔨',title:'Build the Sentence',desc:'What are they doing?',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Order the words to make Present Continuous sentences.'));
-  body.appendChild(sentenceBuilder(['Pat','is','looking','at','the','birds'],'Pat is looking at the birds','Grammar Hero'));
-  body.appendChild(sentenceBuilder(['She','is','riding','a','bike'],'She is riding a bike','Grammar Hero'));
-  body.appendChild(sentenceBuilder(['We','are','having','a','barbecue'],'We are having a barbecue','Grammar Hero'));
-  body.appendChild(nextBtn());
-}},
-
-{icon:'🔤',title:'Sounds & Spelling',desc:'/uː/ vs /ʊ/',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Same spelling "oo", different sound: long /uː/ vs short /ʊ/.'));
-  body.appendChild(heading(`<div class="activity-title">🔊 Listen to the two sounds</div>
-  <p><b>Long /uː/:</b> moon, spoon, pool, school &nbsp; <button class="btn btn-sm btn-yellow" onclick="speak('moon, spoon, pool, school')">🔊</button></p>
-  <p><b>Short /ʊ/:</b> book, cook, hood, wood &nbsp; <button class="btn btn-sm btn-yellow" onclick="speak('book, cook, hood, wood')">🔊</button></p>`));
-  body.appendChild(quizBlock('Which word has the LONG /uː/ sound like "moon"?',['book','cook','spoon','wood'],2,'Say them out loud!'));
-  body.appendChild(quizBlock('Which word has the SHORT /ʊ/ sound like "book"?',['pool','school','moon','cook'],3,'It is a short sound.'));
-  body.appendChild(nextBtn());
-}},
-
-{icon:'🎧',title:'Listening Lab',desc:'Listen & choose',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Listen carefully and choose the correct answer.'));
-  body.appendChild(listeningBlock('The boy is riding a bike.','What is he doing?',['swimming','riding a bike','fishing'],1,'Great Listener'));
-  body.appendChild(listeningBlock('She is putting up the tent.','What is she doing?',['cooking','putting up the tent','reading a map'],1,'Great Listener'));
-  body.appendChild(listeningBlock('They are having a barbecue.','What are they doing?',['having a barbecue','going for a walk','fishing'],0,'Great Listener'));
-  body.appendChild(nextBtn());
-}},
-
-{icon:'🗣️',title:'Speaking Lab',desc:'Talk in English!',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Answer out loud. The teacher marks your speaking.'));
-  body.appendChild(speakingCard('What do you like doing when you go camping?','I like swimming and having a barbecue.','Super Speaker'));
-  body.appendChild(speakingCard('What are you doing now?','I am studying English.','Super Speaker'));
-  body.appendChild(speakingCard('What must you do to stay safe when camping?','I must stay away from wild animals.','Super Speaker'));
-  body.appendChild(nextBtn());
-}},
-
-{icon:'🛡️',title:'Must / Mustn\'t & Safety',desc:'Camping rules',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('MUST = you have to. MUSTN\'T = it is not allowed.'));
-  body.appendChild(heading(`<div class="activity-title">📘 Rules</div>
-  <p>✅ You <b>must</b> put out the campfire.<br>❌ You <b>mustn't</b> feed wild animals.</p>`));
-  body.appendChild(quizBlock('You ___ feed wild animals.',['must','mustn\'t'],1,'It is dangerous, so it is NOT allowed.'));
-  body.appendChild(quizBlock('You ___ put out the fire before you sleep.',['must','mustn\'t'],0,'It is a safety rule you HAVE to do.'));
-  body.appendChild(quizBlock('You ___ drop litter in nature.',['must','mustn\'t'],1,'We keep nature clean.'));
-  const sn=document.createElement('div');sn.className='card';
-  sn.innerHTML=`<div class="activity-title">🏕️ Safe or Not Safe?</div><div class="options">
-    <button class="opt" onclick="this.classList.add('wrong');bumpStreak(false)">🐻 Feeding wild animals → SAFE</button>
-    <button class="opt" onclick="this.classList.add('correct');addXP(10)">🐻 Feeding wild animals → NOT SAFE</button>
-  </div>`;
-  body.appendChild(sn);
-  body.appendChild(nextBtn());
-}},
-
-{icon:'📖',title:'Story: The Cracked Pot',desc:'A tale from China',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Read the story and discover its message: we are all useful in our own way.'));
-  const scenes=[
-    'A water carrier had two pots. One pot was perfect. The other pot had a crack.',
-    'Every day the cracked pot lost water on the way home. It felt sad and useless.',
-    'One day the carrier said: "Look at the beautiful flowers on your side of the path!"',
-    'The water from the crack had watered the flower seeds every day. The cracked pot was very useful after all!'
-  ];
-  let i=0;
-  const card=document.createElement('div');card.className='card';
-  function draw(){card.innerHTML=`<div class="activity-title">Scene ${i+1} / ${scenes.length}</div>
-    <p style="font-size:1.15rem;margin:14px 0">${scenes[i]}</p>
-    <button class="btn btn-yellow btn-sm" onclick="speak('${scenes[i].replace(/'/g,"\\'")}')">🔊 Listen</button>
-    <div class="module-nav">
-      <button class="btn btn-ghost btn-sm" ${i===0?'disabled':''} onclick="window._prevScene()">◀️ Back</button>
-      <button class="btn btn-green btn-sm" ${i===scenes.length-1?'disabled':''} onclick="window._nextScene()">Next ▶️</button>
-    </div>`;}
-  window._nextScene=()=>{if(i<scenes.length-1){i++;draw();if(i===scenes.length-1)earnBadge('Reading Star');}};
-  window._prevScene=()=>{if(i>0){i--;draw();}};
-  draw();body.appendChild(card);
-  body.appendChild(quizBlock('Why did the cracked pot feel sad?',['It was too heavy','It lost water through the crack','It was too small'],1,'Think about the crack.','Reading Star'));
-  body.appendChild(quizBlock('What does the story teach us?',['We are all useful in our own way','Perfect things are best','Flowers need no water'],0,'Even the cracked pot helped!','Reading Star'));
-  const q=document.createElement('div');q.className='card';
-  q.innerHTML=`<div class="activity-title">✏️ What makes YOU special?</div><textarea rows="3" placeholder="I am special because..."></textarea><button class="btn btn-green btn-sm" onclick="addXP(20);toast('🌟 Wonderful! +20 XP')">✅ Save my answer</button>`;
-  body.appendChild(q);
-  body.appendChild(nextBtn());
-}},
-
-{icon:'📚',title:'My Favourite Book',desc:'Create & present',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Create your own book card and present it in English.'));
-  const f=document.createElement('div');f.className='card';
-  f.innerHTML=`
-    <div class="form-row"><label>Book title</label><input id="bt" type="text"></div>
-    <div class="form-row"><label>Author</label><input id="ba" type="text"></div>
-    <div class="form-row"><label>Favourite character</label><input id="bc" type="text"></div>
-    <div class="form-row"><label>What does he/she look like?</label><input id="bl" type="text"></div>
-    <div class="form-row"><label>What is he/she like?</label><input id="bp" type="text"></div>
-    <div class="form-row"><label>What can he/she do?</label><input id="bd" type="text"></div>
-    <button class="btn btn-accent" onclick="genBookCard()">🎴 GENERATE MY BOOK CARD</button>
-    <div id="bookCardOut" style="margin-top:18px"></div>`;
-  body.appendChild(f);
-  body.appendChild(nextBtn());
-}},
-
-{icon:'🏆',title:'Final Challenge',desc:'50 points test',build:()=>{
-  const body=document.getElementById('modBody');
-  body.appendChild(objective('Show what you learned! 5 sections × 10 points = 50 points.'));
-  body.appendChild(quizBlock('VOCABULARY: What is 🧭?',['torch','compass','rope','tent'],1,'north-south-east-west','English Champion'));
-  body.appendChild(quizBlock('GRAMMAR: She ___ fishing.',['am','is','are'],1,'he/she/it → is','English Champion'));
-  body.appendChild(listeningBlock('The girl is reading a map.','READING/LISTENING: What is she doing?',['reading a map','swimming','sleeping'],0,'English Champion'));
-  body.appendChild(quizBlock('SAFETY: You ___ put out the campfire.',['must','mustn\'t'],0,'It is a rule.','English Champion'));
-  body.appendChild(speakingCard('SPEAKING: Tell me one thing you like doing when camping.','I like fishing and going for walks.','English Champion'));
-  const r=document.createElement('div');r.className='card';
-  r.innerHTML=`<button class="btn btn-lg btn-accent" style="display:block;margin:0 auto" onclick="showResult()">🏁 SEE MY RESULT</button><div id="resultOut"></div>`;
-  body.appendChild(r);
-}}
 ];
-
-/* Book card generator */
-function genBookCard(){
-  const g=id=>document.getElementById(id).value||'—';
-  document.getElementById('bookCardOut').innerHTML=`
-  <div class="book-card">
-    <h3>📚 ${g('bt')}</h3>
-    <p><b>Author:</b> ${g('ba')}</p>
-    <p><b>Favourite character:</b> ${g('bc')}</p>
-    <p><b>Looks like:</b> ${g('bl')}</p>
-    <p><b>Is like:</b> ${g('bp')}</p>
-    <p><b>Can:</b> ${g('bd')}</p>
-    <button class="btn btn-sm btn-yellow" style="margin-top:10px" onclick="presentBook()">🗣️ PRESENT MY BOOK</button>
-  </div>`;
-  addXP(20);earnBadge('Reading Star');
-}
-function presentBook(){
-  const qs=['What is the title of your book?','Who is your favourite character?','What does he/she look like?','What is he/she like?','What can he/she do?'];
-  let msg='Teacher can ask:\n\n'+qs.map(q=>'• '+q).join('\n');
-  qs.forEach((q,i)=>setTimeout(()=>speak(q),i*2500));
-  toast('🗣️ Present your book!');
-}
-
-/* Result */
-function showResult(){
-  const xp=state.xp;
-  let title,msg;
-  const score=Math.min(50,Math.round(xp/10));
-  if(xp>=250){title='🏆 ENGLISH CHAMPION!';earnBadge('English Champion');}
-  else if(xp>=180)title='🌟 GREAT JOB!';
-  else if(xp>=120)title='👍 GOOD WORK!';
-  else if(xp>=60)title='💪 KEEP PRACTISING!';
-  else title='🚀 LET\'S TRY AGAIN!';
-  document.getElementById('resultOut').innerHTML=`
-  <div class="result-big">${title}</div>
-  <div class="result-section">✅ <b>What you did well:</b> vocabulary and grammar activities.</div>
-  <div class="result-section">📈 <b>What to practise:</b> speaking full sentences and listening.</div>
-  <div class="result-section">🎯 <b>Your next challenge:</b> write 5 camping rules using must / mustn't.</div>
-  <div class="result-section">⭐ Total XP: <b>${xp}</b> &nbsp; 🏆 Badges: <b>${state.badges.length}</b></div>
-  <button class="btn btn-green" style="margin-top:12px" onclick="goDashboard()">🔁 Play again</button>`;
-  fireConfetti();
-}
-
-/* Build dashboard */
-function buildDash(){
-  const grid=document.getElementById('dashGrid');grid.innerHTML='';
-  MODULES.forEach(m=>{
-    const c=document.createElement('div');c.className='dash-card';
-    c.innerHTML=`<div class="icon">${m.icon}</div><div class="title">${m.title}</div><div class="desc">${m.desc}</div>`;
-    c.onclick=()=>{markDone(m.title);openModule(m);};
-    grid.appendChild(c);
-  });
-}
-
-/* INIT */
-render();
-</script>
-</body>
-</html>
