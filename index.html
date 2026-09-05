@@ -1,167 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Wonder 3 – Interactive English Class</title>
+<style>
+:root{--primary:#4361ee;--primary-dark:#3a0ca3;--accent:#f72585;--green:#2ec4b6;--yellow:#ffbf00;--bg:#f0f4ff;--card:#fff;--text:#1d3557;--muted:#5c6b8a;--shadow:0 8px 24px rgba(67,97,238,.15)}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif}
+body{background:var(--bg);color:var(--text);line-height:1.5}
+.hidden{display:none!important}
+header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:16px 22px;position:sticky;top:0;z-index:50}
+.htop{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.htop h1{font-size:1.5rem}.htop p{font-size:.8rem;opacity:.9}
+.stat{background:rgba(255,255,255,.18);padding:6px 14px;border-radius:30px;font-weight:700}
+.pbar{height:12px;background:rgba(255,255,255,.25);border-radius:20px;margin-top:10px;overflow:hidden}
+.pfill{height:100%;width:0;background:linear-gradient(90deg,var(--yellow),var(--green));transition:.5s}
+button{cursor:pointer;border:none;font-family:inherit;transition:.15s}
+.btn{background:var(--primary);color:#fff;padding:12px 24px;border-radius:30px;font-weight:700;box-shadow:var(--shadow)}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:scale(.96)}
+.btn-accent{background:var(--accent)}.btn-green{background:var(--green)}.btn-yellow{background:var(--yellow);color:#5a4500}.btn-ghost{background:#e6ecff;color:var(--primary)}
+.btn-sm{padding:8px 16px;font-size:.85rem}.btn-lg{padding:16px 40px;font-size:1.2rem}
+.screen{display:none;animation:fade .4s}.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+.wrap{max-width:1100px;margin:0 auto;padding:22px}
+#home{text-align:center;padding:60px 20px}
+#home .e{font-size:5rem;animation:bounce 2s infinite}@keyframes bounce{50%{transform:translateY(-14px)}}
+#home h2{font-size:2.4rem;color:var(--primary-dark);margin:10px 0}
+.card{background:var(--card);border-radius:18px;padding:24px;box-shadow:var(--shadow);margin-bottom:18px}
+.obj{background:#fff8e1;border-left:6px solid var(--yellow);padding:12px 16px;border-radius:12px;margin-bottom:16px;font-weight:600}
+.atitle{font-size:1.25rem;font-weight:800;margin-bottom:6px}
+.instr{color:var(--muted);margin-bottom:14px}
+.opts{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.opt{background:#eef2ff;border:3px solid transparent;padding:14px;border-radius:14px;font-weight:700;text-align:center}
+.opt:hover{border-color:var(--primary)}.opt.correct{background:#d8f5f0;border-color:var(--green)}.opt.wrong{background:#ffe0ec;border-color:var(--accent)}
+.fb{margin-top:12px;font-weight:800;min-height:24px}.fb.good{color:var(--green)}.fb.bad{color:var(--accent)}
+.hint{background:#e6f7ff;border-radius:10px;padding:8px 14px;margin-top:10px;font-style:italic;color:#0077b6}
+.flashg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
+.flash{background:linear-gradient(160deg,#fff,#eef2ff);border-radius:16px;padding:20px;text-align:center;border:3px solid #dce4ff}
+.flash .em{font-size:3rem}.flash .w{font-size:1.3rem;font-weight:800;margin:6px 0}.flash .es{color:var(--accent);font-weight:600}
+input[type=text]{width:100%;padding:12px;border:3px solid #dce4ff;border-radius:12px;font-size:1.05rem;margin-bottom:6px}
+input:focus{outline:none;border-color:var(--primary)}
+.mw{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.mcol{display:flex;flex-direction:column;gap:10px}
+.mi{padding:14px;border-radius:12px;background:#eef2ff;font-weight:700;text-align:center;border:3px solid transparent}
+.mi.sel{border-color:var(--primary);background:#dce4ff}.mi.matched{background:#d8f5f0;border-color:var(--green);opacity:.7}
+.chip{background:var(--primary);color:#fff;padding:9px 15px;border-radius:18px;font-weight:700;cursor:pointer}
+.slot,.bank{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border-radius:12px}
+.slot{background:#fff8e1;border:3px dashed var(--yellow);margin-bottom:10px}.bank{background:#eef2ff}
+.pagenav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0}
+.sidebar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.ppill{background:#eef2ff;padding:8px 14px;border-radius:12px;font-weight:700;cursor:pointer;border:2px solid transparent}
+.ppill:hover,.ppill.cur{border-color:var(--primary);background:#dce4ff}
+@media(max-width:640px){.mw{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="htop">
+    <div><h1>🏕️ I WONDER 3</h1><p>Interactive English Class</p></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <span class="stat">⭐ <span id="xp">0</span> XP</span>
+      <span class="stat" id="pageInd">—</span>
+    </div>
+  </div>
+  <div class="pbar"><div class="pfill" id="pfill"></div></div>
+</header>
+
+<section id="home" class="screen active">
+  <div class="e">🎒</div>
+  <h2>Interactive Learning</h2>
+  <p style="color:var(--muted);font-size:1.1rem">Activities based on your book pages 16–37</p>
+  <br><button class="btn btn-lg btn-accent" onclick="start()">▶️ START LEARNING</button>
+</section>
+
+<section id="pageScreen" class="screen">
+  <div class="wrap">
+    <button class="btn btn-ghost btn-sm" onclick="show('home')">🏠 Home</button>
+    <div class="sidebar" id="sidebar"></div>
+    <div id="pageBody"></div>
+    <div class="pagenav">
+      <button class="btn btn-ghost" id="prevBtn" onclick="goPage(cur-1)">« Previous</button>
+      <b id="pageOf"></b>
+      <button class="btn btn-green" id="nextBtn" onclick="goPage(cur+1)">Next »</button>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   CONTENIDO DE LAS PÁGINAS  (aquí va tu bloque BOOK_PAGES)
+   ══════════════════════════════════════════════════════════════ */
+
 const BOOK_PAGES = [
-  /* ---------------- PÁGINA 16 ---------------- */
   {
     page: 16,
     title: "Unit 1 – Listening, Skills and Speaking",
     objective: "Identify storybook characters and ask about them",
     activities: [
-      {
-        type: "flashcards",
-        instruction: "Look and say the names of the characters.",
+      { type: "flashcards", instruction: "Look and say the names of the characters.",
         words: [
           { emoji: "👸", word: "Fiona", es: "Fiona" },
           { emoji: "❄️", word: "Elsa", es: "Elsa" },
           { emoji: "🛡️", word: "Obelix", es: "Obelix" },
           { emoji: "🤥", word: "Pinocchio", es: "Pinocho" }
-        ]
-      },
-      {
-        type: "quiz",
-        instruction: "Read and choose the correct character.",
+        ]},
+      { type: "quiz", instruction: "Read and choose the correct character.",
         question: "1. She's a princess. She can make snow and ice.",
-        options: ["Snow White", "Elsa"],
-        correct: 1,
-        hint: "Think about the movie Frozen."
-      },
-      {
-        type: "quiz",
-        instruction: "Read and choose the correct character.",
+        options: ["Snow White", "Elsa"], correct: 1, hint: "Think about the movie Frozen." },
+      { type: "quiz", instruction: "Read and choose the correct character.",
         question: "2. He's a pirate. He can sail a boat.",
-        options: ["Captain Hook", "Puss in Boots"],
-        correct: 0,
-        hint: "He has a hook for a hand."
-      },
-      {
-        type: "quiz",
-        instruction: "Read and choose the correct character.",
+        options: ["Captain Hook", "Puss in Boots"], correct: 0, hint: "He has a hook for a hand." },
+      { type: "quiz", instruction: "Read and choose the correct character.",
         question: "5. He's brave and kind. He can fly on a broom.",
-        options: ["Harry Potter", "Peter Pan"],
-        correct: 0,
-        hint: "He wears glasses and goes to Hogwarts."
-      },
-      {
-        type: "speaking",
-        instruction: "Play the game with a classmate or out loud.",
+        options: ["Harry Potter", "Peter Pan"], correct: 0, hint: "He wears glasses and goes to Hogwarts." },
+      { type: "speaking", instruction: "Play the game with a classmate or out loud.",
         question: "Is it a man or a woman? What does he look like?",
-        model: "He's fat. He's got straight red hair. It's Obelix!"
-      }
+        model: "He's fat. He's got straight red hair. It's Obelix!" }
     ]
   },
-
-  /* ---------------- PÁGINA 17 ---------------- */
   {
     page: 17,
     title: "Unit 1 – Reading & Writing (My Favourite Book)",
     objective: "Read about Peter Pan and describe book characters",
     activities: [
-      {
-        type: "text",
-        instruction: "Read the book review summary:",
-        html: "<p><b>Title:</b> Peter Pan<br><b>Author:</b> J. M. Barrie<br><b>Favourite Character:</b> Peter Pan<br><b>Description:</b> Peter Pan is a boy from Neverland. He's 12 years old. He's got red hair, brown eyes and pointed ears. His clothes are green. He can fly!</p>"
-      },
-      {
-        type: "quiz",
-        instruction: "Underline / Choose the correct word.",
-        question: "Peter Pan is ... years old.",
-        options: ["twelve", "twenty"],
-        correct: 0
-      },
-      {
-        type: "quiz",
-        instruction: "Choose the correct option.",
-        question: "He's from...",
-        options: ["Greenland", "Neverland"],
-        correct: 1
-      },
-      {
-        type: "quiz",
-        instruction: "Choose the correct hair color.",
-        question: "He's got ... hair.",
-        options: ["dark", "red"],
-        correct: 1
-      },
-      {
-        type: "speaking",
-        instruction: "Tell the class about your favourite book.",
+      { type: "text", instruction: "Read the book review summary:",
+        html: "<p><b>Title:</b> Peter Pan<br><b>Author:</b> J. M. Barrie<br><b>Favourite Character:</b> Peter Pan<br><b>Description:</b> Peter Pan is a boy from Neverland. He's 12 years old. He's got red hair, brown eyes and pointed ears. His clothes are green. He can fly!</p>" },
+      { type: "quiz", instruction: "Underline / Choose the correct word.",
+        question: "Peter Pan is ... years old.", options: ["twelve", "twenty"], correct: 0 },
+      { type: "quiz", instruction: "Choose the correct option.",
+        question: "He's from...", options: ["Greenland", "Neverland"], correct: 1 },
+      { type: "quiz", instruction: "Choose the correct hair color.",
+        question: "He's got ... hair.", options: ["dark", "red"], correct: 1 },
+      { type: "speaking", instruction: "Tell the class about your favourite book.",
         question: "What's your favourite book and who is your favourite character?",
-        model: "My favourite book is Harry Potter. He is a young wizard with glasses and he can do magic."
-      }
+        model: "My favourite book is Harry Potter. He is a young wizard with glasses and he can do magic." }
     ]
   },
-
-  /* ---------------- PÁGINA 18 ---------------- */
   {
     page: 18,
     title: "Clocks English – Punctuation Rules",
     objective: "Learn capital letters, full stops, question marks, and exclamation marks",
     activities: [
-      {
-        type: "text",
-        instruction: "Grammar Rules",
-        html: "<ul><li>Use <b>CAPITAL LETTERS</b> for the first word in a sentence and for names.</li><li>End a sentence with a <b>full stop (.)</b>, a <b>question mark (?)</b>, or an <b>exclamation mark (!)</b>.</li></ul>"
-      },
-      {
-        type: "type",
-        instruction: "Rewrite with correct punctuation and capital letters.",
-        question: "what is your favourite colour",
-        answer: "What is your favourite colour?",
-        hint: "Start with 'W' and end with '?'"
-      },
-      {
-        type: "type",
-        instruction: "Rewrite with correct punctuation.",
-        question: "i like chocolate ice cream",
-        answer: "I like chocolate ice cream.",
-        hint: "Capital 'I' and end with '.'"
-      },
-      {
-        type: "type",
-        instruction: "Rewrite with correct punctuation.",
-        question: "my brother's name is george",
-        answer: "My brother's name is George.",
-        hint: "Capital 'M' and capital 'G' for George."
-      }
+      { type: "text", instruction: "Grammar Rules",
+        html: "<ul><li>Use <b>CAPITAL LETTERS</b> for the first word in a sentence and for names.</li><li>End a sentence with a <b>full stop (.)</b>, a <b>question mark (?)</b>, or an <b>exclamation mark (!)</b>.</li></ul>" },
+      { type: "type", instruction: "Rewrite with correct punctuation and capital letters.",
+        question: "what is your favourite colour", answer: "What is your favourite colour?", hint: "Start with 'W' and end with '?'" },
+      { type: "type", instruction: "Rewrite with correct punctuation.",
+        question: "i like chocolate ice cream", answer: "I like chocolate ice cream.", hint: "Capital 'I' and end with '.'" },
+      { type: "type", instruction: "Rewrite with correct punctuation.",
+        question: "my brother's name is george", answer: "My brother's name is George.", hint: "Capital 'M' and capital 'G' for George." }
     ]
   },
-
-  /* ---------------- PÁGINA 19 ---------------- */
   {
     page: 19,
     title: "Story Punctuation – The Frogs",
     objective: "Complete story dialogues with correct punctuation",
     activities: [
-      {
-        type: "build",
-        instruction: "Build the question with correct punctuation:",
-        words: ["Can", "we", "play,", "Fred?"],
-        correct: "Can we play, Fred?"
-      },
-      {
-        type: "type",
-        instruction: "Complete with punctuation:",
-        question: "yes let's go in here → ?",
-        answer: "Yes, let's go in here.",
-        hint: "Capital Y and a full stop at the end."
-      },
-      {
-        type: "type",
-        instruction: "Complete with punctuation:",
-        question: "look, it's butter → ?",
-        answer: "Look, it's butter!",
-        hint: "Capital L and exclamation mark."
-      }
+      { type: "build", instruction: "Build the question with correct punctuation:",
+        words: ["Can", "we", "play,", "Fred?"], correct: "Can we play, Fred?" },
+      { type: "type", instruction: "Complete with punctuation:",
+        question: "yes let's go in here → ?", answer: "Yes, let's go in here.", hint: "Capital Y and a full stop at the end." },
+      { type: "type", instruction: "Complete with punctuation:",
+        question: "look, it's butter → ?", answer: "Look, it's butter!", hint: "Capital L and exclamation mark." }
     ]
   },
-
-  /* ---------------- PÁGINA 20 ---------------- */
   {
     page: 20,
     title: "Sounds and Words – Phonics (oo)",
     objective: "Recognize same spelling with different sounds (oo)",
     activities: [
-      {
-        type: "flashcards",
-        instruction: "Listen and repeat the words with 'oo'.",
+      { type: "flashcards", instruction: "Listen and repeat the words with 'oo'.",
         words: [
           { emoji: "👢", word: "boot", es: "bota" },
           { emoji: "👨‍🍳", word: "cook", es: "cocinar / cocinero" },
@@ -169,43 +177,25 @@ const BOOK_PAGES = [
           { emoji: "🪵", word: "wood", es: "madera" },
           { emoji: "🌙", word: "moon", es: "luna" },
           { emoji: "🏫", word: "school", es: "escuela" }
-        ]
-      },
-      {
-        type: "type",
-        instruction: "Complete the rhyming sentence.",
-        question: "Poor Baloo is in the ...",
-        answer: "zoo",
-        hint: "Rhymes with Baloo"
-      },
-      {
-        type: "type",
-        instruction: "Complete the rhyming sentence.",
-        question: "Captain Hook likes to ...",
-        answer: "cook",
-        hint: "Rhymes with Hook"
-      },
-      {
-        type: "match",
-        instruction: "Match the rhyming words.",
+        ]},
+      { type: "type", instruction: "Complete the rhyming sentence.",
+        question: "Poor Baloo is in the ...", answer: "zoo", hint: "Rhymes with Baloo" },
+      { type: "type", instruction: "Complete the rhyming sentence.",
+        question: "Captain Hook likes to ...", answer: "cook", hint: "Rhymes with Hook" },
+      { type: "match", instruction: "Match the rhyming words.",
         pairs: [
-          { word: "moon", emoji: "🥄" }, // spoon
-          { word: "hood", emoji: "🪵" }, // wood
-          { word: "pool", emoji: "🏫" }  // school
-        ]
-      }
+          { word: "moon", emoji: "🥄" },
+          { word: "hood", emoji: "🪵" },
+          { word: "pool", emoji: "🏫" }
+        ]}
     ]
   },
-
-  /* ---------------- PÁGINA 21 ---------------- */
   {
     page: 21,
     title: "Unit 1 – Review & Self-Assessment",
     objective: "Describe characters and review achievements",
     activities: [
-      {
-        type: "flashcards",
-        instruction: "Physical appearance features:",
+      { type: "flashcards", instruction: "Physical appearance features:",
         words: [
           { emoji: "👩‍🦰", word: "straight hair", es: "pelo liso" },
           { emoji: "👩‍🦱", word: "curly hair", es: "pelo rizado" },
@@ -213,26 +203,18 @@ const BOOK_PAGES = [
           { emoji: "👧", word: "freckles", es: "pecas" },
           { emoji: "👓", word: "glasses", es: "gafas" },
           { emoji: "👱‍♀️", word: "a ponytail", es: "una coleta" }
-        ]
-      },
-      {
-        type: "speaking",
-        instruction: "Describe your own storybook character.",
+        ]},
+      { type: "speaking", instruction: "Describe your own storybook character.",
         question: "What's his/her name? What does he/she look like?",
-        model: "Her name is Luna. She's got curly fair hair and glasses. She can fly!"
-      }
+        model: "Her name is Luna. She's got curly fair hair and glasses. She can fly!" }
     ]
   },
-
-  /* ---------------- PÁGINA 22 ---------------- */
   {
     page: 22,
     title: "Unit 2 – Camping (Time to Wonder)",
     objective: "Learn camping activities and vocabulary",
     activities: [
-      {
-        type: "flashcards",
-        instruction: "Look and say camping activities.",
+      { type: "flashcards", instruction: "Look and say camping activities.",
         words: [
           { emoji: "🏊‍♂️", word: "swim", es: "nadar" },
           { emoji: "🎣", word: "fish", es: "pescar" },
@@ -240,26 +222,18 @@ const BOOK_PAGES = [
           { emoji: "🥩", word: "have a barbecue", es: "hacer una barbacoa" },
           { emoji: "🎲", word: "play games", es: "jugar a juegos" },
           { emoji: "🚴‍♂️", word: "ride a bike", es: "montar en bici" }
-        ]
-      },
-      {
-        type: "speaking",
-        instruction: "Talk with a friend about camping.",
+        ]},
+      { type: "speaking", instruction: "Talk with a friend about camping.",
         question: "What do you like doing when you go camping?",
-        model: "I like fishing and having a barbecue."
-      }
+        model: "I like fishing and having a barbecue." }
     ]
   },
-
-  /* ---------------- PÁGINA 23 ---------------- */
   {
     page: 23,
     title: "Unit 2 – Natural vs Man-made Sounds",
     objective: "Classify natural and man-made sounds",
     activities: [
-      {
-        type: "flashcards",
-        instruction: "Vocabulary for sounds:",
+      { type: "flashcards", instruction: "Vocabulary for sounds:",
         words: [
           { emoji: "🦉", word: "owl", es: "búho" },
           { emoji: "🚒", word: "fire engine", es: "camión de bomberos" },
@@ -267,34 +241,19 @@ const BOOK_PAGES = [
           { emoji: "📻", word: "radio", es: "radio" },
           { emoji: "🎸", word: "guitar", es: "guitarra" },
           { emoji: "💨", word: "wind", es: "viento" }
-        ]
-      },
-      {
-        type: "quiz",
-        instruction: "Is this sound natural or man-made?",
-        question: "The sound of an owl is...",
-        options: ["natural", "man-made"],
-        correct: 0
-      },
-      {
-        type: "quiz",
-        instruction: "Is this sound natural or man-made?",
-        question: "The sound of a fire engine is...",
-        options: ["natural", "man-made"],
-        correct: 1
-      }
+        ]},
+      { type: "quiz", instruction: "Is this sound natural or man-made?",
+        question: "The sound of an owl is...", options: ["natural", "man-made"], correct: 0 },
+      { type: "quiz", instruction: "Is this sound natural or man-made?",
+        question: "The sound of a fire engine is...", options: ["natural", "man-made"], correct: 1 }
     ]
   },
-
-  /* ---------------- PÁGINA 24 ---------------- */
   {
     page: 24,
     title: "Language in Action – Camping Gear",
     objective: "Learn words for camping equipment",
     activities: [
-      {
-        type: "flashcards",
-        instruction: "Look, listen and repeat camping equipment.",
+      { type: "flashcards", instruction: "Look, listen and repeat camping equipment.",
         words: [
           { emoji: "🎒", word: "rucksack", es: "mochila" },
           { emoji: "🛏️", word: "sleeping bag", es: "saco de dormir" },
@@ -304,240 +263,115 @@ const BOOK_PAGES = [
           { emoji: "🧭", word: "compass", es: "brújula" },
           { emoji: "🧥", word: "raincoat", es: "chubasquero" },
           { emoji: "🔭", word: "binoculars", es: "prismáticos" }
-        ]
-      },
-      {
-        type: "quiz",
-        instruction: "Which item helps us to keep warm?",
-        question: "To keep warm we use a...",
-        options: ["sleeping bag", "compass"],
-        correct: 0
-      },
-      {
-        type: "quiz",
-        instruction: "Which item helps us to find our way?",
-        question: "To find our way we use a...",
-        options: ["raincoat", "map and compass"],
-        correct: 1
-      }
+        ]},
+      { type: "quiz", instruction: "Which item helps us to keep warm?",
+        question: "To keep warm we use a...", options: ["sleeping bag", "compass"], correct: 0 },
+      { type: "quiz", instruction: "Which item helps us to find our way?",
+        question: "To find our way we use a...", options: ["raincoat", "map and compass"], correct: 1 }
     ]
   },
-
-  /* ---------------- PÁGINA 25 ---------------- */
   {
     page: 25,
     title: "Unit 2 – Grammar (Present Continuous)",
     objective: "Use 'am/is/are + verb-ing' to talk about actions in progress",
     activities: [
-      {
-        type: "text",
-        instruction: "Grammar Box",
-        html: "<p><b>What are you doing?</b><br>I am packing my rucksack.<br><i>pack → packing | make → making | swim → swimming</i></p>"
-      },
-      {
-        type: "quiz",
-        instruction: "Look at the picture and answer.",
-        question: "What is Pat doing?",
-        options: ["She is making lunch.", "She is looking at the birds."],
-        correct: 1
-      },
-      {
-        type: "type",
-        instruction: "Complete the sentence (pack -> ?)",
-        question: "I am ... my rucksack.",
-        answer: "packing",
-        hint: "Add -ing to pack."
-      },
-      {
-        type: "build",
-        instruction: "Build the sentence:",
-        words: ["Pat", "is", "looking", "at", "the", "birds"],
-        correct: "Pat is looking at the birds"
-      }
+      { type: "text", instruction: "Grammar Box",
+        html: "<p><b>What are you doing?</b><br>I am packing my rucksack.<br><i>pack → packing | make → making | swim → swimming</i></p>" },
+      { type: "quiz", instruction: "Look at the picture and answer.",
+        question: "What is Pat doing?", options: ["She is making lunch.", "She is looking at the birds."], correct: 1 },
+      { type: "type", instruction: "Complete the sentence (pack -> ?)",
+        question: "I am ... my rucksack.", answer: "packing", hint: "Add -ing to pack." },
+      { type: "build", instruction: "Build the sentence:",
+        words: ["Pat", "is", "looking", "at", "the", "birds"], correct: "Pat is looking at the birds" }
     ]
   },
-
-  /* ---------------- PÁGINA 26 ---------------- */
   {
     page: 26,
     title: "Storytime – Let's pack!",
     objective: "Understand the story and practice listening",
     activities: [
-      {
-        type: "text",
-        instruction: "Story Reading",
-        html: "<p>ROLO: <i>What are you doing?</i><br>Children: <i>We're getting ready for our school camping trip!</i></p>"
-      },
-      {
-        type: "quiz",
-        instruction: "Answer the question based on the story.",
-        question: "What are the children getting ready for?",
-        options: ["A birthday party", "A school camping trip"],
-        correct: 1
-      }
+      { type: "text", instruction: "Story Reading",
+        html: "<p>ROLO: <i>What are you doing?</i><br>Children: <i>We're getting ready for our school camping trip!</i></p>" },
+      { type: "quiz", instruction: "Answer the question based on the story.",
+        question: "What are the children getting ready for?", options: ["A birthday party", "A school camping trip"], correct: 1 }
     ]
   },
-
-  /* ---------------- PÁGINA 27 ---------------- */
   {
     page: 27,
     title: "Storytime – True or False & Communication",
     objective: "Check story comprehension and practice dialogue",
     activities: [
-      {
-        type: "quiz",
-        instruction: "Read and choose True or False.",
-        question: "1. The children are going on a school camping trip.",
-        options: ["True", "False"],
-        correct: 0
-      },
-      {
-        type: "quiz",
-        instruction: "Read and choose True or False.",
-        question: "2. Cody's dad is helping the children.",
-        options: ["True", "False"],
-        correct: 1,
-        hint: "ROLO the robot is helping them."
-      },
-      {
-        type: "speaking",
-        instruction: "Practice the dialogue with a partner.",
-        question: "Larry: Diana, what are you doing?",
-        model: "I'm getting ready for our school camping trip. Can you help me?"
-      }
+      { type: "quiz", instruction: "Read and choose True or False.",
+        question: "1. The children are going on a school camping trip.", options: ["True", "False"], correct: 0 },
+      { type: "quiz", instruction: "Read and choose True or False.",
+        question: "2. Cody's dad is helping the children.", options: ["True", "False"], correct: 1, hint: "ROLO the robot is helping them." },
+      { type: "speaking", instruction: "Practice the dialogue with a partner.",
+        question: "Larry: Diana, what are you doing?", model: "I'm getting ready for our school camping trip. Can you help me?" }
     ]
   },
-
-  /* ---------------- PÁGINA 28 ---------------- */
   {
     page: 28,
     title: "Language in Action – Camping Actions",
     objective: "Learn rules and action verbs for camping",
     activities: [
-      {
-        type: "match",
-        instruction: "Match the action verb with the picture/object.",
+      { type: "match", instruction: "Match the action verb with the picture/object.",
         pairs: [
-          { word: "feed", emoji: "🐻" },      // wild animals
-          { word: "put up", emoji: "⛺" },    // a tent
-          { word: "drop", emoji: "🗑️" },      // litter
-          { word: "light", emoji: "🔥" }     // a campfire
-        ]
-      },
-      {
-        type: "quiz",
-        instruction: "Choose the correct rule response.",
-        question: "Can I feed the bear?",
-        options: ["Yes, sure!", "No! We mustn't feed wild animals."],
-        correct: 1
-      }
+          { word: "feed", emoji: "🐻" },
+          { word: "put up", emoji: "⛺" },
+          { word: "drop", emoji: "🗑️" },
+          { word: "light", emoji: "🔥" }
+        ]},
+      { type: "quiz", instruction: "Choose the correct rule response.",
+        question: "Can I feed the bear?", options: ["Yes, sure!", "No! We mustn't feed wild animals."], correct: 1 }
     ]
   },
-
-  /* ---------------- PÁGINA 29 ---------------- */
   {
     page: 29,
     title: "Unit 2 – Grammar (Must / Mustn't)",
     objective: "Use 'must' for obligation and 'mustn't' for prohibition",
     activities: [
-      {
-        type: "text",
-        instruction: "Grammar Rules",
-        html: "<p><b>Must / Mustn't</b><br>• You <b>must</b> stay away from wild animals. (Obligation)<br>• You <b>mustn't</b> go near wild animals. (Prohibition)</p>"
-      },
-      {
-        type: "quiz",
-        instruction: "Choose 'must' or 'mustn't'.",
-        question: "You ... feed the animals at the zoo.",
-        options: ["must", "mustn't"],
-        correct: 1
-      },
-      {
-        type: "quiz",
-        instruction: "Choose 'must' or 'mustn't'.",
-        question: "You ... be quiet at the cinema.",
-        options: ["must", "mustn't"],
-        correct: 0
-      },
-      {
-        type: "quiz",
-        instruction: "Choose 'must' or 'mustn't'.",
-        question: "You ... run near the swimming pool.",
-        options: ["must", "mustn't"],
-        correct: 1
-      }
+      { type: "text", instruction: "Grammar Rules",
+        html: "<p><b>Must / Mustn't</b><br>• You <b>must</b> stay away from wild animals. (Obligation)<br>• You <b>mustn't</b> go near wild animals. (Prohibition)</p>" },
+      { type: "quiz", instruction: "Choose 'must' or 'mustn't'.",
+        question: "You ... feed the animals at the zoo.", options: ["must", "mustn't"], correct: 1 },
+      { type: "quiz", instruction: "Choose 'must' or 'mustn't'.",
+        question: "You ... be quiet at the cinema.", options: ["must", "mustn't"], correct: 0 },
+      { type: "quiz", instruction: "Choose 'must' or 'mustn't'.",
+        question: "You ... run near the swimming pool.", options: ["must", "mustn't"], correct: 1 }
     ]
   },
-
-  /* ---------------- PÁGINA 30 ---------------- */
   {
     page: 30,
     title: "Unit 2 – Listening & Values (Safe Camping)",
     objective: "Identify safe camping behaviors",
     activities: [
-      {
-        type: "quiz",
-        instruction: "Which option is safe?",
-        question: "Water safety:",
-        options: ["Drink water from rivers.", "Drink bottled water."],
-        correct: 1
-      },
-      {
-        type: "quiz",
-        instruction: "Which option is safe?",
-        question: "Animal safety:",
-        options: ["Stay away from wild animals.", "Feed wild animals."],
-        correct: 0
-      },
-      {
-        type: "quiz",
-        instruction: "Which option is safe?",
-        question: "Tent safety:",
-        options: ["Cook inside a tent.", "Cook away from tents or trees."],
-        correct: 1
-      }
+      { type: "quiz", instruction: "Which option is safe?",
+        question: "Water safety:", options: ["Drink water from rivers.", "Drink bottled water."], correct: 1 },
+      { type: "quiz", instruction: "Which option is safe?",
+        question: "Animal safety:", options: ["Stay away from wild animals.", "Feed wild animals."], correct: 0 },
+      { type: "quiz", instruction: "Which option is safe?",
+        question: "Tent safety:", options: ["Cook inside a tent.", "Cook away from tents or trees."], correct: 1 }
     ]
   },
-
-  /* ---------------- PÁGINA 31 ---------------- */
   {
     page: 31,
     title: "Unit 2 – Reading & Writing (Social Science)",
     objective: "Read camping rules and select correct modal verbs",
     activities: [
-      {
-        type: "quiz",
-        instruction: "Read and choose the correct rule.",
-        question: "1. You ... put up your tent near water or under a tree.",
-        options: ["must", "mustn't"],
-        correct: 1
-      },
-      {
-        type: "quiz",
-        instruction: "Read and choose the correct rule.",
-        question: "2. You ... light a campfire away from the trees.",
-        options: ["must", "mustn't"],
-        correct: 0
-      },
-      {
-        type: "quiz",
-        instruction: "Read and choose the correct rule.",
-        question: "5. You ... take a map of the area.",
-        options: ["must", "mustn't"],
-        correct: 0
-      }
+      { type: "quiz", instruction: "Read and choose the correct rule.",
+        question: "1. You ... put up your tent near water or under a tree.", options: ["must", "mustn't"], correct: 1 },
+      { type: "quiz", instruction: "Read and choose the correct rule.",
+        question: "2. You ... light a campfire away from the trees.", options: ["must", "mustn't"], correct: 0 },
+      { type: "quiz", instruction: "Read and choose the correct rule.",
+        question: "5. You ... take a map of the area.", options: ["must", "mustn't"], correct: 0 }
     ]
   },
-
-  /* ---------------- PÁGINA 32 ---------------- */
   {
     page: 32,
     title: "CLIL Geography – Map Symbols",
     objective: "Understand map symbols and location choices",
     activities: [
-      {
-        type: "flashcards",
-        instruction: "Learn map symbols:",
+      { type: "flashcards", instruction: "Learn map symbols:",
         words: [
           { emoji: "🚉", word: "train station", es: "estación de tren" },
           { emoji: "📞", word: "telephone", es: "teléfono" },
@@ -545,128 +379,179 @@ const BOOK_PAGES = [
           { emoji: "ℹ️", word: "information point", es: "punto de información" },
           { emoji: "🧺", word: "picnic area", es: "zona de picnic" },
           { emoji: "🅿️", word: "parking area", es: "aparcamiento" }
-        ]
-      },
-      {
-        type: "quiz",
-        instruction: "Where is it best to put up a tent?",
-        question: "Putting up a tent near a campfire:",
-        options: ["near the campfire", "away from the campfire"],
-        correct: 1
-      }
+        ]},
+      { type: "quiz", instruction: "Where is it best to put up a tent?",
+        question: "Putting up a tent near a campfire:", options: ["near the campfire", "away from the campfire"], correct: 1 }
     ]
   },
-
-  /* ---------------- PÁGINA 33 ---------------- */
   {
     page: 33,
     title: "Geography Project – One Foot Island",
     objective: "Read and count map symbols on an island poster",
     activities: [
-      {
-        type: "type",
-        instruction: "Count the train stations from page 33.",
-        question: "There are ... train stations.",
-        answer: "2",
-        hint: "Type the number 2"
-      }
+      { type: "type", instruction: "Count the train stations from page 33.",
+        question: "There are ... train stations.", answer: "2", hint: "Type the number 2" }
     ]
   },
-
-  /* ---------------- PÁGINA 34 ---------------- */
   {
     page: 34,
     title: "Sounds and Words – Spelling (-ing)",
     objective: "Learn rules for adding -ing to verbs",
     activities: [
-      {
-        type: "text",
-        instruction: "Spelling Rules for -ing:",
-        html: "<ul><li>go → going</li><li>give → giving (drop the -e)</li><li>win → winning (double the consonant)</li><li>pick → picking</li></ul>"
-      },
-      {
-        type: "type",
-        instruction: "Write the opposite/correct -ing form:",
-        question: "close → ?",
-        answer: "closing",
-        hint: "Drop the 'e' and add 'ing'."
-      },
-      {
-        type: "type",
-        instruction: "Write the -ing form:",
-        question: "sit → ?",
-        answer: "sitting",
-        hint: "Double the 't'."
-      }
+      { type: "text", instruction: "Spelling Rules for -ing:",
+        html: "<ul><li>go → going</li><li>give → giving (drop the -e)</li><li>win → winning (double the consonant)</li><li>pick → picking</li></ul>" },
+      { type: "type", instruction: "Write the opposite/correct -ing form:",
+        question: "close → ?", answer: "closing", hint: "Drop the 'e' and add 'ing'." },
+      { type: "type", instruction: "Write the -ing form:",
+        question: "sit → ?", answer: "sitting", hint: "Double the 't'." }
     ]
   },
-
-  /* ---------------- PÁGINA 35 ---------------- */
   {
     page: 35,
     title: "Unit 2 Review – Self-Assessment",
     objective: "Review Unit 2 vocabulary and rules",
     activities: [
-      {
-        type: "build",
-        instruction: "Build the rule sentence:",
-        words: ["We", "mustn't", "make", "noise"],
-        correct: "We mustn't make noise"
-      },
-      {
-        type: "quiz",
-        instruction: "What can you do now?",
-        question: "Can you describe actions happening now using -ing?",
-        options: ["Yes, I can!", "I need more practice."],
-        correct: 0
-      }
+      { type: "build", instruction: "Build the rule sentence:",
+        words: ["We", "mustn't", "make", "noise"], correct: "We mustn't make noise" },
+      { type: "quiz", instruction: "What can you do now?",
+        question: "Can you describe actions happening now using -ing?", options: ["Yes, I can!", "I need more practice."], correct: 0 }
     ]
   },
-
-  /* ---------------- PÁGINA 36 ---------------- */
   {
     page: 36,
     title: "Wonder Tales 1 – The Cracked Pot (Part 1)",
     objective: "Read a story from China and practice listening",
     activities: [
-      {
-        type: "flashcards",
-        instruction: "Story Vocabulary:",
+      { type: "flashcards", instruction: "Story Vocabulary:",
         words: [
           { emoji: "🏺", word: "pot", es: "vasija / maceta" },
           { emoji: "⚡", word: "crack", es: "grieta" },
           { emoji: "💧", word: "water", es: "agua" },
           { emoji: "🛣️", word: "road", es: "camino / carretera" }
-        ]
-      },
-      {
-        type: "quiz",
-        instruction: "Understand the story:",
-        question: "Why can't the old pot hold much water?",
-        options: ["Because it's too big", "Because it's got a crack"],
-        correct: 1
-      }
+        ]},
+      { type: "quiz", instruction: "Understand the story:",
+        question: "Why can't the old pot hold much water?", options: ["Because it's too big", "Because it's got a crack"], correct: 1 }
     ]
   },
-
-  /* ---------------- PÁGINA 37 ---------------- */
   {
     page: 37,
     title: "Wonder Tales 1 – The Cracked Pot (Part 2)",
     objective: "Understand the moral of the story",
     activities: [
-      {
-        type: "type",
-        instruction: "Complete the summary word:",
-        question: "The old pot waters the woman's ...",
-        answer: "flowers",
-        hint: "Beautiful colorful plants."
-      },
-      {
-        type: "text",
-        instruction: "Wonder Values",
-        html: "<p style='color:var(--primary-dark); font-weight:bold;'>🌸 We are all useful in our own way!</p>"
-      }
+      { type: "type", instruction: "Complete the summary word:",
+        question: "The old pot waters the woman's ...", answer: "flowers", hint: "Beautiful colorful plants." },
+      { type: "text", instruction: "Wonder Values",
+        html: "<p style='color:#3a0ca3; font-weight:bold;'>🌸 We are all useful in our own way!</p>" }
     ]
   }
 ];
+
+/* ══════════════════════════════════════════════════════════════
+   MOTOR — no necesitas tocar nada de aquí hacia abajo
+   ══════════════════════════════════════════════════════════════ */
+
+let cur=0, xp=0;
+function addXP(n){xp+=n;document.getElementById('xp').textContent=xp;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');scrollTo(0,0);}
+function speak(t,r=1){if(!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=r;speechSynthesis.speak(u);}
+function start(){if(!BOOK_PAGES.length){alert('Add pages inside BOOK_PAGES first!');return;}buildSidebar();goPage(0);show('pageScreen');}
+
+function buildSidebar(){
+  const s=document.getElementById('sidebar');s.innerHTML='';
+  BOOK_PAGES.forEach((p,i)=>{const b=document.createElement('div');b.className='ppill';b.textContent='Page '+p.page;b.onclick=()=>goPage(i);s.appendChild(b);});
+}
+function goPage(i){
+  if(i<0||i>=BOOK_PAGES.length)return;
+  cur=i;const p=BOOK_PAGES[i];
+  document.getElementById('pageInd').textContent='Page '+p.page;
+  document.getElementById('pageOf').textContent='Page '+(i+1)+' of '+BOOK_PAGES.length;
+  document.getElementById('pfill').style.width=Math.round((i+1)/BOOK_PAGES.length*100)+'%';
+  document.getElementById('prevBtn').style.visibility=i===0?'hidden':'visible';
+  document.getElementById('nextBtn').style.visibility=i===BOOK_PAGES.length-1?'hidden':'visible';
+  document.querySelectorAll('.ppill').forEach((b,bi)=>b.classList.toggle('cur',bi===i));
+  const body=document.getElementById('pageBody');body.innerHTML='';
+  const h=document.createElement('div');h.innerHTML=`<h2 style="color:var(--primary-dark)">📖 Page ${p.page} — ${p.title||''}</h2>`;body.appendChild(h);
+  if(p.objective){const o=document.createElement('div');o.className='obj';o.textContent='🎯 '+p.objective;body.appendChild(o);}
+  (p.activities||[]).forEach((a,ai)=>body.appendChild(renderActivity(a,ai+1)));
+}
+
+function esc(s){return String(s).replace(/\\/g,'\\\\').replace(/`/g,'').replace(/'/g,"\\'");}
+
+function renderActivity(a,num){
+  const c=document.createElement('div');c.className='card';
+  const head=`<div class="atitle">Activity ${num}</div><div class="instr">${a.instruction||''}</div>`;
+
+  if(a.type==='flashcards'){
+    c.innerHTML=head+`<div class="flashg"></div>`;
+    const g=c.querySelector('.flashg');
+    a.words.forEach(w=>{const d=document.createElement('div');d.className='flash';
+      d.innerHTML=`<div class="em">${w.emoji||'📄'}</div><div class="w">${w.word}</div><div class="es">${w.es||''}</div>
+      <button class="btn btn-sm btn-green" onclick="speak('${esc(w.word)}')">🔊</button>
+      <button class="btn btn-sm btn-yellow" onclick="speak('${esc(w.word)}',.6)">🐢</button>`;g.appendChild(d);});
+  }
+
+  else if(a.type==='quiz'){
+    c.innerHTML=head+`<b>${a.question||''}</b><div class="opts"></div><div class="hint hidden">💡 ${a.hint||''}</div><div class="fb"></div>`;
+    const o=c.querySelector('.opts');
+    a.options.forEach((op,i)=>{const b=document.createElement('button');b.className='opt';b.textContent=op;
+      b.onclick=()=>{const fb=c.querySelector('.fb');
+        if(i===a.correct){b.classList.add('correct');fb.textContent='✅ Correct! +10 XP';fb.className='fb good';addXP(10);o.querySelectorAll('.opt').forEach(x=>x.disabled=true);}
+        else{b.classList.add('wrong');fb.textContent='❌ Try again!';fb.className='fb bad';c.querySelector('.hint').classList.remove('hidden');}};
+      o.appendChild(b);});
+  }
+
+  else if(a.type==='match'){
+    c.innerHTML=head+`<div class="fb"></div><div class="mw"><div class="mcol L"></div><div class="mcol R"></div></div>`;
+    const L=c.querySelector('.L'),R=c.querySelector('.R');let sel=null,done=0;
+    const sh=[...a.pairs].sort(()=>Math.random()-.5);
+    a.pairs.forEach((p,i)=>{const e=document.createElement('div');e.className='mi';e.textContent=p.word;e.dataset.k=i;e.onclick=()=>pick(e,'w');L.appendChild(e);});
+    sh.forEach(p=>{const e=document.createElement('div');e.className='mi';e.innerHTML='<span style="font-size:2rem">'+p.emoji+'</span>';e.dataset.k=a.pairs.indexOf(p);e.onclick=()=>pick(e,'e');R.appendChild(e);});
+    function pick(el,t){if(el.classList.contains('matched'))return;
+      if(!sel){sel={el,t,k:el.dataset.k};el.classList.add('sel');return;}
+      if(sel.t===t){sel.el.classList.remove('sel');sel={el,t,k:el.dataset.k};el.classList.add('sel');return;}
+      if(sel.k===el.dataset.k){sel.el.classList.remove('sel');sel.el.classList.add('matched');el.classList.add('matched');done++;addXP(5);
+        if(done===a.pairs.length){c.querySelector('.fb').textContent='🎉 All matched!';c.querySelector('.fb').className='fb good';}}
+      else{el.classList.add('wrong');sel.el.classList.add('wrong');const s=sel;setTimeout(()=>{el.classList.remove('wrong','sel');s.el.classList.remove('wrong','sel');},600);}
+      sel=null;}
+  }
+
+  else if(a.type==='type'){
+    c.innerHTML=head+`<b>${a.question||''}</b><br><br><input type="text" placeholder="Type here..."><br><button class="btn btn-sm btn-green">✅ Check</button> <button class="btn btn-sm btn-yellow lst">🔊</button><div class="hint hidden">💡 ${a.hint||''}</div><div class="fb"></div>`;
+    const inp=c.querySelector('input');c.querySelector('.lst').onclick=()=>speak(a.answer);
+    c.querySelector('.btn-green').onclick=()=>{const fb=c.querySelector('.fb');
+      if(inp.value.trim().toLowerCase()===String(a.answer).toLowerCase()){fb.textContent='✅ Correct! +10 XP';fb.className='fb good';addXP(10);}
+      else{fb.textContent='❌ Try again!';fb.className='fb bad';c.querySelector('.hint').classList.remove('hidden');}};
+  }
+
+  else if(a.type==='build'){
+    c.innerHTML=head+`<div class="slot"></div><div class="bank"></div><br><button class="btn btn-sm btn-green ck">✅ Check</button> <button class="btn btn-sm btn-ghost cl">🗑️ Clear</button><div class="fb"></div>`;
+    const slot=c.querySelector('.slot'),bank=c.querySelector('.bank');
+    [...a.words].sort(()=>Math.random()-.5).forEach(w=>{const s=document.createElement('span');s.className='chip';s.textContent=w;s.onclick=()=>slot.appendChild(s);bank.appendChild(s);});
+    c.querySelector('.cl').onclick=()=>[...slot.children].forEach(x=>bank.appendChild(x));
+    c.querySelector('.ck').onclick=()=>{const built=[...slot.children].map(x=>x.textContent).join(' ');const fb=c.querySelector('.fb');
+      if(built===a.correct){fb.textContent='✅ Perfect! +10 XP';fb.className='fb good';addXP(10);speak(a.correct);}
+      else{fb.textContent='❌ Not yet!';fb.className='fb bad';speak(a.correct,.7);}};
+  }
+
+  else if(a.type==='speaking'){
+    c.innerHTML=head+`<p style="font-size:1.3rem;text-align:center;margin:14px 0">"${a.question||''}"</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-yellow mdl">🔊 Hear Model</button>
+      <button class="btn btn-green rdy">🎤 I'm ready</button>
+      <button class="btn btn-ghost gd">👍 Good</button>
+    </div>`;
+    c.querySelector('.mdl').onclick=()=>speak(a.model);
+    c.querySelector('.rdy').onclick=function(){addXP(30);this.textContent='⭐ Excellent! +30';};
+    c.querySelector('.gd').onclick=()=>addXP(20);
+  }
+
+  else if(a.type==='text'){
+    c.innerHTML=head+`<div style="font-size:1.1rem">${a.html||''}</div>`;
+  }
+
+  else{c.innerHTML=head+'<i>Unknown activity type.</i>';}
+  return c;
+}
+</script>
+</body>
+</html>
